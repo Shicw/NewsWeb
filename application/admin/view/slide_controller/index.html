@@ -1,0 +1,115 @@
+{include file="public/head" /}
+<title>首页轮播新闻管理</title>
+</head>
+
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">轮播新闻管理</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="">网站管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/SlideController/index')}">轮播新闻管理</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:10px 0;">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                        <div class="tabCont" style="display:block;">
+                            <label>当前轮播新闻</label>
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>类别</th>
+                                    <th>部门</th>
+                                    <th>新闻标题</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="slideList" id="vo"}
+                                <tr>
+                                    <td>{$vo.type}</td>
+                                    <td>{$vo.dep}</td>
+                                    <td>
+                                        <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}" target="_Blank" title="点击查看新闻详情">
+                                            {$vo.title}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <!--轮播新闻数量为1时，不能继续取消轮播-->
+                                        {php}$slideCount = count($slideList);{/php}
+                                        {neq name="$slideCount" value="1"}
+                                        <a class="label label-warning" onclick="Dialog({$vo['id']},'cancelSlide','取消轮播')" href="javascript:void(0);">取消轮播</a>
+                                        {else/}
+                                        <p class="label label-default">取消轮播</p>
+                                        {/neq}
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xjhy" style="padding:10px 0;margin-top: 40px">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                        <div class="tabCont" style="display:block;">
+                            <label>设置轮播新闻</label>
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>类别</th>
+                                    <th>部门</th>
+                                    <th>新闻标题</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {volist name="newsList" id="vo"}
+                                <tr>
+                                    <td>{$vo.type}</td>
+                                    <td>{$vo.dep}</td>
+                                    <td>
+                                        <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}" target="_Blank" title="点击查看新闻详情">
+                                            {$vo.title}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <!--轮播新闻数量>5时，不能继续设置轮播-->
+                                        {lt name="$slideCount" value="5"}
+                                        <a class="label label-warning" onclick="Dialog({$vo['id']},'setSlide','设置轮播')" href="javascript:void(0);">设置轮播</a>
+                                        {else/}
+                                        <p class="label label-default">设置轮播</p>
+                                        {/lt}
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                            {php}$newsCount=count($newsList);{/php}
+                            {eq name="$newsCount" value="0"}
+                            <p style="text-align: center">没有可设置轮播的新闻！</p>
+                            {/eq}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/admin/js/dialog-layer.js"></script>
+</body>
+</html>

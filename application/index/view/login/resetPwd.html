@@ -1,0 +1,94 @@
+{include file="public/head" /}
+<title>密码重置</title>
+<style>#login{width: 100%;margin-top: 20px}</style>
+</head>
+<body>
+<header class="am-topbar am-topbar-fixed-top wos-header">
+    <div class="am-container">
+        <h1 class="am-topbar-brand">
+            <a href="{:url('index/Index/index')}"><img src="__STATIC__/images/logo.png" alt=""></a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-warning am-show-sm-only"
+                data-am-collapse="{target: '#collapse-head'}">
+            <span class="am-sr-only">导航切换</span>
+            <span class="am-icon-bars"></span>
+        </button>
+
+        <div class="am-collapse am-topbar-collapse" id="collapse-head">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li><a href="{:url('index/Index/index')}">首页</a></li>
+                <!--nav仅输出4个部门按钮，多余的放进下拉按钮中-->
+                {volist name="nav" id="vo" length="3"}
+                <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                {/volist}
+                <li class="am-dropdown" data-am-dropdown>
+                    <a class="am-dropdown-toggle">更多部门<span class="am-icon-caret-down"></span></a>
+                    <ul class="am-dropdown-content">
+                        {volist name="nav" id="vo" offset="3" }
+                        <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                        {/volist}
+                    </ul>
+                </li>
+            </ul>
+            <div class="am-topbar-right">
+                <a href="{:url('index/Register/index')}" class="am-btn am-btn-success am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</a>
+            </div>
+
+            <div class="am-topbar-right">
+                <a href="{:url('index/Login/index')}" class="am-btn am-btn-danger am-topbar-btn am-btn-sm login"><span class="am-icon-user"></span> 登录</a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="am-container">
+    <form action="{:url('Login/resetPwdPost')}" class="am-form" data-am-validator method="post">
+        <div class="am-u-sm-12 am-u-md-5 am-u-md-centered " style="margin-top: 50px">
+            <legend>密码重置</legend>
+            <div class="am-form-group">
+                <label for="input-username">用户名：</label>
+                <input type="text" name="username" id="input-username" minlength="4" maxlength="8" required/>
+            </div>
+            <div class="am-form-group">
+                <label for="input-email">邮箱：</label>
+                <input type="text" id="input-email" minlength="6" required/>
+            </div>
+            <div class="am-form-group">
+                <label for="input-emailCode">邮箱验证码</label>
+                <div>
+                    <input class="am-fl" type="text" id="input-emailCode" name="emailCode" required  style="width: 70%">
+                    <a class="am-btn am-btn-danger" onclick="getCode()" id="getCode" disabled>获取邮箱验证码</a>
+                </div>
+            </div>
+            <div class="am-form-group">
+                <label for="input-newPassword">新密码：</label>
+                <input type="password" name="newPassword" id="input-newPassword" minlength="6" maxlength="12" required/>
+            </div>
+            <button id="login" class="am-btn am-btn-danger" type="submit">提交</button>
+        </div>
+    </form>
+</div>
+<script>
+    var email = $("#input-email");
+    //输入邮箱后，获取验证码按钮变成可点状态
+    email.blur(function () {
+        if(email.val()){
+            $("#getCode").removeAttr('disabled');
+        }
+    });
+    //ajax将邮箱传给后端php
+    function getCode () {
+        var load = layer.load(0, {shade: false});
+        $.post("/index/login/sendCode",{userEmail:email.val()},function (result) {
+            if (result.status==1){
+                $("#getCode").attr('disabled',true);
+                layer.close(load);
+                layer.msg("验证码发送成功!");
+            }else {
+                layer.msg("验证码发失败!");
+            }
+        },"json");
+    }
+</script>
+</body>
+</html>

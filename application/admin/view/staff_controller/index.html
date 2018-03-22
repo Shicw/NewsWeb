@@ -1,0 +1,173 @@
+{include file="public/head" /}
+<title>人员管理</title>
+<style>.pagination{margin-top: -5px;}</style>
+</head>
+
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">人员管理</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="">用户管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/StaffController/index')}">人员管理</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:0px;">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                        <ul class="tabNav">
+                            <li class="now"><span><a href="{:url('admin/StaffController/index')}">人员信息</a></span></li>
+                            <li><span><a href="{:url('admin/StaffController/add')}">添加人员</a></span></li>
+                        </ul>
+                        <div class="tabCont" style="display:block;">
+                            <div class="form-group form-inline">
+                                <form method="post" action="{:url('admin/StaffController/index')}">
+                                    <div class="form-group">
+                                        关键字:
+                                        <input class="form-control" type="text" name="keyword" style="width: 200px;" value="{:input('request.keyword')}">
+                                    </div>
+                                    部门:
+                                    <select name="dep_id" id="input-depId" class="form-control">
+                                        <option hidden value=""></option>
+                                        {volist name="depList" id="vo"}
+                                            {php}$selected=$dep_id==$vo['id']?"selected":"";{/php}
+                                            <option value="{$vo.id}" {$selected}>{$vo.name}</option>
+                                        {/volist}
+                                    </select>
+                                    性别:
+                                    <select name="sex" id="input-sex" class="form-control">
+                                        <option hidden value=""></option>
+                                        {php}$sexArray = array("1"=>"男","2"=>"女");{/php}
+                                        {foreach name="sexArray" item="vo"}
+                                        {php}$selected=$sex==$key?"selected":"";{/php}
+                                        <option value="{$key}" {$selected}>{$vo}</option>
+                                        {/foreach}
+                                    </select>
+                                    入职时间:
+                                    <input type="text" class="form-control jeinput date_begin" value="{:input('request.date_begin')}" style="width: 100px;" name="date_begin"  onfocus=this.blur() /> -
+                                    <input type="text" class="form-control jeinput date_end" value="{:input('request.date_end')}" style="width: 100px;" name="date_end"  onfocus=this.blur() />
+                                    <input type="submit" class="btn btn-primary" value="搜索"/>
+                                    <a class="btn btn-danger" href="{:url('admin/StaffController/index')}">清空 </a>
+                                </form>
+                            </div>
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>工号</th>
+                                    <th>部门</th>
+                                    <th>头像</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>入职时间</th>
+                                    <th>手机</th>
+                                    <th>最后登录时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {php}
+                                $sex = array("0"=>"未设置","1"=>"男","2"=>"女");
+                                $status = array("0"=>"禁用","1"=>"启用");
+                                {/php}
+
+                                {foreach name="staffList" item="vo"}
+                                <tr>
+                                    <td>{$vo.id}</td>
+                                    <td>{$vo.job_number}</td>
+                                    <td>{$vo.dep}</td>
+                                    <td>
+                                        {php}$src=$vo['avatar']?$vo['avatar']:"avatar.png"{/php}
+                                        <img src="__STATIC__/avatar/{$src}" class="img-circle" width="26" height="26"/>
+                                    </td>
+                                    <td>
+                                        <a href="#" onclick="showDetail({$vo['id']})" data-toggle="modal" data-target="#Modal" title="点击查看人员信息">{$vo.name}</a>
+                                    </td>
+                                    <td>{$sex[$vo['sex']]}</td>
+                                    <td>{$vo.employ_date|date='Y-m-d',###}</td>
+                                    <td>{$vo.mobile}</td>
+                                    <td>{$vo.last_login_time|date='Y-m-d H:i:s',###}</td>
+                                    <td>{$status[$vo['status']]}</td>
+                                    <td>
+                                        {neq name="vo.status" value="1"}
+                                        <a class="label label-info" onclick="Dialog({$vo['id']},'enable','启用')" href="javascript:void(0);">启用</a>
+                                        {else/}
+                                        <a class="label label-warning" onclick="Dialog({$vo['id']},'disable','禁用')" href="javascript:void(0);">禁用</a>
+                                        {/neq}
+                                        <a class="label label-primary" href="{:url('admin/StaffController/edit',array('id'=>$vo['id'],'name'=>$vo['name']))}">修改</a>
+                                        <a class="label label-danger" onclick="Dialog({$vo['id']},'delete','删除')" href="javascript:void(0);">删除</a>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                            <div class="pagination">{$page}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框 -->
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" style="height: 400px">
+                <div class="body1 col-md-6"></div>
+                <div class="body2 col-md-6"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框 -->
+</body>
+<script>
+    //点击，ajax触发模态框展示人员详情
+    function showDetail(id){
+        $.post("/admin/staff_controller/showDetail",{id:id},function(data){
+            if(data.code==1){
+                //console.log(result.data);
+                $('.modal-title').html("人员详细信息");
+                $('.body1').html("<div class='form-group'><label>姓名：</label><div>"+data.data['name']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>性别：</label><div>"+data.data['sex']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>部门：</label><div>"+data.data['dep']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>岗位：</label><div>"+data.data['job']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>工号：</label><div>"+data.data['job_number']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>户籍地：</label><div>"+data.data['province']+data.data['city']+data.data['district']+"</div></div>"
+                );
+                $('.body2').html("<div class='form-group'><label class='control-label'>手机：</label><div>"+data.data['mobile']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>邮箱：</label><div>"+data.data['email']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>出生日期：</label><div>"+data.data['birthday']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>入职日期：</label><div>"+data.data['employ_date']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>登录名：</label><div>"+data.data['username']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>状态：</label><div>"+data.data['status']+"</div></div>");
+            }
+        },"json");
+    }
+    $(".date_begin").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $(".date_end").jeDate({
+        format: "YYYY-MM-DD"
+    });
+</script>
+<script src="__STATIC__/admin/js/dialog-layer.js"></script>
+</html>

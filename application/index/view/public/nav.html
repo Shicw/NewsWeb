@@ -1,0 +1,46 @@
+<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-warning am-show-sm-only"
+        data-am-collapse="{target: '#collapse-head'}">
+    <span class="am-sr-only">导航切换</span>
+    <span class="am-icon-bars"></span>
+</button>
+
+<div class="am-collapse am-topbar-collapse" id="collapse-head">
+    <ul class="am-nav am-nav-pills am-topbar-nav">
+        <li><a href="{:url('index/Index/index')}">首页</a></li>
+        <!--nav仅输出4个部门按钮，多余的放进下拉按钮中-->
+        {volist name="nav" id="vo" length="3"}
+        <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+        {/volist}
+        <li class="am-dropdown" data-am-dropdown>
+            <a class="am-dropdown-toggle">更多部门<span class="am-icon-caret-down"></span></a>
+            <ul class="am-dropdown-content">
+                {volist name="nav" id="vo" offset="3" }
+                <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                {/volist}
+            </ul>
+        </li>
+    </ul>
+    {php}if($user){{/php}
+    <div class="am-topbar-right" >
+        <div class="am-nav am-nav-pills am-topbar-nav">
+          <div class="am-dropdown" data-am-dropdown>
+              <a class="am-btn am-btn-success am-dropdown-toggle" >
+                  {$user.name}&nbsp;<span class="am-icon-caret-down"></span>
+              </a>
+              <ul class="am-dropdown-content">
+                  <li><a href="{:url('index/Person/index')}">个人中心</a></li>
+                  <li><a href="{:url('index/Person/comment')}">我的评论</a></li>
+              </ul>
+              <a class="am-btn am-btn-danger" href="{:url('index/Login/loginOut')}">注销</a>
+          </div>
+        </div>
+    </div>
+    {php}}else{{/php}
+    <div class="am-topbar-right">
+        <a href="{:url('index/Register/index')}" class="am-btn am-btn-success am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</a>
+    </div>
+    <div class="am-topbar-right">
+        <a href="{:url('index/Login/index')}" class="am-btn am-btn-danger am-topbar-btn am-btn-sm login"><span class="am-icon-user"></span> 登录</a>
+    </div>
+    {php}}{/php}
+</div>

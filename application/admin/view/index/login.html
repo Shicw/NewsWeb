@@ -1,0 +1,28 @@
+{include file="public/head" /}
+<title>登录</title>
+<style>.login_m h2{ font-size: 30px;padding-top: 40px;}</style>
+</head>
+
+<body>
+<!--登录-->
+<div class="login">
+	<div class="bg_img"><img src="__STATIC__/admin/images/login_bg.jpg"/></div>
+	
+    <div class="login_m">
+    	<form action="{:url('admin/Index/doLogin')}" method="post">
+        <h2>后台登录</h2>
+    	<ul>
+        	<li class="wz">用户名</li>
+            <li><input name="username" type="text"></li>
+            <li class="wz">密码</li>
+            <li><input name="password" type="password"></li>
+            <li>
+            	<button type="submit" class="btn btn-primary" style="width: 100%; height: 52px;">登录</button>
+            </li>
+        </ul>
+        </form>
+    </div>
+</div>
+<!--登录-->
+</body>
+</html>

@@ -1,0 +1,55 @@
+{include file="public/head" /}
+<title>新闻类别管理</title>
+</head>
+
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">新闻类别管理</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="">门户管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/NewsTypeController/index')}">新闻类别管理</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:0px;">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                        <ul class="tabNav">
+                            <li><span><a href="{:url('admin/NewsTypeController/index')}">新闻类别</a></span></li>
+                            <li class="now"><span><a href="{:url('admin/NewsTypeController/add')}">添加新闻类别</a></span></li>
+                        </ul>
+                        <div class="tabCont" style="height: 200px;display: block">
+                            <form action="{:url('admin/NewsTypeController/addPost')}" method="post">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="input-name"><span class="form-required">*</span>类别名称</label>
+                                        <input type="text" id="input-name" name="name" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-description">&nbsp;&nbsp;备注</label>
+                                        <input type="text" id="input-description" name="description" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">添加</button>
+                                        <a class="btn btn-default" href="{:url('admin/NewsTypeController/index')}">返回</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

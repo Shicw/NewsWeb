@@ -1,0 +1,74 @@
+{include file="public/head" /}
+<title>验证码邮箱设置</title>
+</head>
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">验证码邮箱设置</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a href="{:url('admin/Index/Index')}" target="_top"><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/Index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/ConfigController/mailer')}">验证码邮箱设置</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:10px 0;height: 670px">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+
+                        <form action="{:url('admin/ConfigController/mailerPost')}" method="post">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="input-fromname"><span>*</span>发件人：</label>
+                                    <input type="text" id="input-fromname" name="fromname" class="form-control" value="{$mailer[1]['value']}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-username"><span>*</span>发件邮箱帐号：</label>
+                                    <input type="text" id="input-username" name="username" class="form-control" value="{$mailer[6]['value']}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-password"><span>*</span>发件邮箱密码：</label>
+                                    <input type="password" id="input-password" name="password" class="form-control" value="{$mailer[7]['value']}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-host"><span>*</span>SMTP服务器：</label>
+                                    <input type="text" id="input-host" name="host" class="form-control" value="{$mailer[2]['value']}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-port"><span>*</span>SMTP服务器端口：</label>
+                                    <input type="text" id="input-port" name="port" class="form-control" value="{$mailer[3]['value']}">
+                                </div>
+                                <div class="form-group">
+                                    {php}$secureArray = array("1"=>"ssl","2"=>"tls");{/php}
+                                    <label for="input-secure"><span>*</span>连接方式：</label>
+                                    <select name="secure" id="input-secure" class="form-control">
+                                        {foreach name="$secureArray" item="vo"}
+                                          {php}$selected=$mailer[4]['value']==$vo?"selected":"";{/php}
+                                          <option value="{$vo}" {$selected}>{$vo}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-subject"><span>*</span>邮件标题：</label>
+                                    <input type="text" id="input-subject" name="subject" class="form-control" value="{$mailer[5]['value']}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-body"><span>*</span>邮件内容：</label>
+                                    <input type="text" id="input-body" name="body" class="form-control" value="{$mailer[0]['value']}">
+                                </div>
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

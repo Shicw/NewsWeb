@@ -1,0 +1,310 @@
+{include file="public/head" /}
+<title>个人中心</title>
+<style>
+    #pic {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 20px auto;
+        cursor: pointer;
+    }
+
+</style>
+</head>
+<body>
+<header class="am-topbar am-topbar-fixed-top wos-header">
+    <div class="am-container">
+        <h1 class="am-topbar-brand">
+            <a href="{:url('index/Index/index')}"><img src="__STATIC__/images/logo.png" alt=""></a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-warning am-show-sm-only"
+        data-am-collapse="{target: '#collapse-head'}">
+        <span class="am-sr-only">导航切换</span>
+        <span class="am-icon-bars"></span>
+        </button>
+
+        <div class="am-collapse am-topbar-collapse" id="collapse-head">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li><a href="{:url('index/Index/index')}">首页</a></li>
+                <!--nav仅输出4个部门按钮，多余的放进下拉按钮中-->
+                {volist name="nav" id="vo" length="3"}
+                <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                {/volist}
+                <li class="am-dropdown" data-am-dropdown>
+                    <a class="am-dropdown-toggle">更多部门<span class="am-icon-caret-down"></span></a>
+                    <ul class="am-dropdown-content">
+                        {volist name="nav" id="vo" offset="3" }
+                        <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                        {/volist}
+                    </ul>
+                </li>
+                <li class="am-active"><a href="{:url('index/Person/index')}">个人中心</a></li>
+            </ul>
+
+            <div class="am-topbar-right" >
+                <div class="am-nav am-nav-pills am-topbar-nav">
+                    <div class="am-dropdown" data-am-dropdown>
+                        <a class="am-btn am-btn-success am-dropdown-toggle" >
+                            {$user.name}&nbsp;<span class="am-icon-caret-down"></span>
+                        </a>
+                        <ul class="am-dropdown-content">
+                            <li><a href="{:url('index/Person/index')}">个人中心</a></li>
+                            <li><a href="{:url('index/Person/comment')}">我的评论</a></li>
+                        </ul>
+                        <a class="am-btn am-btn-danger" href="{:url('index/Login/loginOut')}">注销</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>
+<!-- 个人中心 -->
+<div class="am-g" style="margin-top: 20px">
+  <div class="am-u-sm-0 am-u-md-2 am-u-lg-2">&nbsp;</div>
+  <div class="am-u-sm-12 am-u-md-8 am-u-lg-8">
+      <div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
+        <ul class="am-tabs-nav am-nav am-nav-tabs">
+          <li class="am-active"><a href="javascript: void(0)">个人信息</a></li>
+          <li><a href="javascript: void(0)">修改头像</a></li>
+          <li><a href="javascript: void(0)">修改密码</a></li>
+        </ul>
+      
+        <div class="am-tabs-bd">
+          <div class="am-tab-panel am-active">
+              <form action="{:url('index/Person/editPost')}" class="am-form" method="post" data-am-validator>
+                  <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                      <div class="am-form-group">
+                          <label for="input-name">姓名：</label>
+                          <input id="input-name" name="name" value="{$user.name}" type="text" minlength="2"
+                                 maxlength="4" class="js-pattern-name" require>
+                      </div>
+                      <div class="am-form-group">
+                          <label for="input-sex">性别：</label>
+
+                          <select name="sex" id="input-sex" require class="js-pattern-num form-control">
+                              <option hidden>未设置</option>
+                              {php}$sexArray = array("1"=>"男","2"=>"女");{/php}
+                              {foreach name="sexArray" item="vo"}
+                              {php}$selected = $user['sex'] == $key ? "selected" : "";{/php}
+                              <option value="{$key}" {$selected}>{$vo}</option>
+                              {/foreach}
+                          </select>
+                      </div>
+                      <div class="am-form-group">
+                          <label for="input-dep">所属部门：</label>
+                          <select id="input-dep" name="dep_id" class="js-pattern-num" require
+                                  onchange="updateDep(this);">
+                              <option hidden>请选择部门</option>
+                              {volist name="depList" id="vo"}
+                              {php}$selected = $user['dep_id'] == $vo['id'] ? "selected" : "";{/php}
+                              <option value="{$vo.id}" {$selected}>{$vo.name}</option>
+                              {/volist}
+                          </select>
+                      </div>
+
+                      <div class="am-form-group">
+                          <label for="input-job">岗位：</label>
+                          <select name="job_id" id="input-job" class="js-pattern-num" require>
+                              <option hidden>请选择岗位</option>
+                              {volist name="jobList" id="vo"}
+                              {php}$selected = $user['job_id'] == $vo['id'] ? "selected" : "";{/php}
+                              <option value="{$vo.id}" {$selected}>{$vo.name}</option>
+                              {/volist}
+                          </select>
+                      </div>
+                      <div class="am-form-group">
+                          <label for="input-jNumber">工号</label>
+                          <input id="input-jNumber" name="job_number" value="{$user['job_number']}" type="text"
+                                 minlength="7" maxlength="7" class="js-pattern-num" require>
+                      </div>
+                  </div>
+                  <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                      <div class="am-form-group">
+                          <label for="input-mobile">手机：</label>
+                          <input type="tel" name="mobile" id="input-mobile" value="{$user['mobile']}" minlength="11"
+                                 maxlength="11" class="js-pattern-num" required/>
+                      </div>
+                      <div class="am-form-group">
+                          <label for="input-email">邮箱：</label>
+                          <input type="email" name="email" id="input-email" value="{$user['email']}" required/>
+                      </div>
+                      <div class="am-form-group">
+                          <label for="input-birthday">出生日期：</label>
+                          <div class="am-input-group am-datepicker-date"
+                               data-am-datepicker="{format: 'yyyy-mm-dd', viewMode: 'years'}">
+                              <input type="text" name="birthday" id="input-birthday"
+                                     value="{$user['birthday']|date='Y-m-d',###}" class="am-form-field" required
+                                     readonly/>
+                              <span class="am-input-group-btn am-datepicker-add-on">
+                               <button class="am-btn am-btn-default" type="button"><span class="am-icon-calendar"></span> </button>
+                              </span>
+                          </div>
+                      </div>
+                      <div class="am-form-group">
+                          <label for="input-employ_date">入职时间：</label>
+                          <div class="am-input-group am-datepicker-date"
+                               data-am-datepicker="{format: 'yyyy-mm-dd', viewMode: 'years'}">
+                              <input type="text" name="employ_date" id="input-employ_date"
+                                     value="{$user['employ_date']|date='Y-m-d',###}" class="am-form-field" required
+                                     readonly/>
+                              <span class="am-input-group-btn am-datepicker-add-on">
+                              <button class="am-btn am-btn-default" type="button"><span class="am-icon-calendar"></span> </button>
+                              </span>
+                          </div>
+                      </div>
+                      <div class="am-form-group">
+                          <label for="input-province">户籍地：</label>
+                          <div class="am-form-inline">
+                              <div class="am-form-group">
+                                  <select name="province_id" id="input-province" class="js-pattern-num"
+                                          onchange="provinceChange(this,'index');" require>
+                                      <option hidden> 请选择省份</option>
+                                      {volist name="$provinceList" id="vo"}
+                                      {php}$selected = $vo['id'] == $user['province_id'] ? "selected" : ""{/php}
+                                      <option value="{$vo.id}" {$selected}>{$vo.name}</option>
+                                      {/volist}
+                                  </select>
+                              </div>
+                              <div class="am-form-group">
+                                  <select name="city_id" class="js-pattern-num" id="input-city"
+                                          onchange="cityChange(this,'index');" require>
+                                      <option hidden> 请选择城市</option>
+                                      {volist name="$cityList" id="vo"}
+                                      {php}$selected = $vo['id'] == $user['city_id'] ? "selected" : ""{/php}
+                                      <option value="{$vo.id}" {$selected}>{$vo.name}</option>
+                                      {/volist}
+                                  </select>
+                              </div>
+                              <div class="am-form-group">
+                                  <select name="district_id" class="js-pattern-num" id="input-district" require>
+                                      <option hidden> 请选择区县</option>
+                                      {volist name="$districtList" id="vo"}
+                                      {php}$selected = $vo['id'] == $user['district_id'] ? "selected" : ""{/php}
+                                      <option value="{$vo.id}" {$selected}>{$vo.name}</option>
+                                      {/volist}
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <input type="hidden" name="id" value="{$user['id']}">
+                  <div class="am-u-sm-12 am-u-md-12 am-u-lg-12" style="text-align: center">
+                      <button class="am-btn am-btn-success" style="padding:10px 50px">保存</button>
+                  </div>
+              </form>
+          </div>
+          <div class="am-tab-panel" style="padding: 30px">
+              <!--修改头像-->
+              {php}$src=$user['avatar']?$user['avatar']:"avatar.png";{/php}
+              <label>当前头像:</label><br>
+              <img class="am-circle" src="__STATIC__/avatar/{$src}" id="img"  width="140" height="140"/>
+              <!--enctype="multipart/form-data"开启文件上传-->
+              <form action="{:url('index/Person/avatarPost')}" enctype="multipart/form-data" method="post">
+                <div class="am-form-group am-form-file" style="margin:20px 0">
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm" >
+                        <i class="am-icon-cloud-upload"></i> 选择要上传的头像</button>
+                    <label style="color: red" hidden id="warning">图片大小超过限制！</label>
+                    <input id="doc-form-file" type="file" multiple name="avatar" accept="image/png, image/jpeg">
+                </div>
+                  <button type="submit" class="am-btn am-btn-success" id="submit" disabled>确认</button>
+                  仅支持jpg、png、jpeg格式，且大小不得超过0.5M！
+              </form>
+
+          </div>
+          <div class="am-tab-panel">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+              <form action="{:url('index/Person/pwdEdit')}" class="am-form" method="post" data-am-validator>
+               <div class="am-form-group">
+                <label for="input-username">用户名：</label>
+                <input type="text" id="input-username" name="username" minlength="4" maxlength="8" class="js-pattern-username" required/>
+              </div>
+               <div class="am-form-group">
+                  <label for="input-passwordOld">旧密码：</label>
+                  <input type="password" id="input-passwordOld" name="passwordOld" minlength="6" maxlength="12" class="js-pattern-password" required/>
+               </div>
+               <div class="am-form-group">
+                  <label for="input-passwordNew">新密码：</label>
+                  <input type="password" id="input-passwordNew" name="passwordNew" minlength="6" maxlength="12" class="js-pattern-password" required/>
+               </div>
+                  <div class="am-form-group">
+                      <label for="input-passwordNewAgain">新密码：</label>
+                      <input type="password" id="input-passwordNewAgain" name="passwordNewAgain" minlength="6" maxlength="12" class="js-pattern-password" required/>
+                  </div>
+               <div class="am-u-sm-12 am-u-md-12 am-u-lg-12" style="text-align: center">
+                   <button class="am-btn am-btn-success" style="padding:10px 50px">保存</button>
+               </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="am-u-sm-0 am-u-md-2 am-u-lg-2">&nbsp;</div>
+</div>
+<!-- 个人中心 -->
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+    <a href="#top" title="回到顶部">
+        <span class="am-gotop-title">回到顶部</span>
+        <i class="am-gotop-icon am-icon-chevron-up"></i>
+    </a>
+</div>
+
+{include file="public/footer" /}
+</body>
+<script>
+  if ($.AMUI && $.AMUI.validator) {
+    $.AMUI.validator.patterns.name = /[\u4e00-\u9fa5]/;
+    $.AMUI.validator.patterns.num = /^[0-9]+$/;
+    $.AMUI.validator.patterns.username = /^[A-Za-z0-9]+$/;
+    $.AMUI.validator.patterns.password = /^[A-Za-z0-9\_]+$/;  
+  }
+  //当更换部门时，ajax异步加载岗位select
+  function updateDep(self){
+      var did = self.value;
+      $.post("/index/person/loadJobs",{did:did},function(data){
+          if(data.code == 1){
+              reloadJobs(data);
+          }
+      },"json");
+  }
+  //当更改部门时，加载岗位
+  function reloadJobs(data) {
+      //删除除第一条option以外的所有option(第一条option为"请选择")
+      $("#input-job option:not(:first)").remove();
+
+      var data = data['data'];
+      var select = $("#input-job");
+      for (var i = 0; i < data.length; i++) {
+          select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
+      }
+  }
+  //当选择图片input值变化,且大小小于0.5M才能点击确认按钮
+  $('#doc-form-file').change(function () {
+      //获取当前上传图片
+      var imgData = this.files[0];
+      //获取图片的大小
+      var imgSize = imgData.size;
+      //console.log(imgData);
+      //新建一个文件读取对象
+      var imgRead = new FileReader();
+      //要读取的文件对象
+      imgRead.readAsDataURL(imgData);
+      //当读取成功时，创建image对象，将读取到的图片信息放入src
+      imgRead.onload = function() {
+          var aImage = new Image();
+          aImage.src = this.result;
+          $('#img').attr('src',aImage.src);
+      };
+      if(imgSize>524288) {
+          $('#warning').removeAttr('hidden');
+          $('#submit').attr('disabled','true');
+      }else{
+          $('#warning').attr('hidden','true');
+          $('#submit').removeAttr('disabled');
+      }
+  });
+</script>
+<script type="text/javascript" src="__STATIC__/js/provinceCity.js"></script>
+</html>

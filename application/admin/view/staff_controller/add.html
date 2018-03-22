@@ -1,0 +1,171 @@
+{include file="public/head" /}
+<title>人员管理</title>
+</head>
+
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">人员管理</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="">用户管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/StaffController/index')}">人员管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/StaffController/add')}">添加人员</a>
+
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:0px;">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                        <ul class="tabNav">
+                            <li><span><a href="{:url('admin/StaffController/index')}">人员信息</a></span></li>
+                            <li class="now"><span><a href="{:url('admin/StaffController/add')}">添加人员</a></span></li>
+                        </ul>
+                        <div class="tabCont" style="height: 530px; display:block;">
+                            <div class="col-md-1"></div>
+                            <form action="{:url('admin/StaffController/addPost')}" method="post">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="input-name"><span class="form-required">*</span>姓名</label>
+                                        <input type="text" id="input-name" name="name" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-sex"><span class="form-required">*</span>性别</label>
+                                        <select name="sex" id="input-sex" class="form-control">
+                                            <option hidden>未设置</option>
+                                            {php}$sexArray = array("1"=>"男","2"=>"女");{/php}
+                                            {foreach name="sexArray" item="vo"}
+                                            <option value="{$key}">{$vo}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-dep"><span class="form-required">*</span>部门</label>
+                                        <select name="dep_id" id="input-dep" class="form-control" onchange="updateDep(this);">
+                                            <option hidden>请选择部门</option>
+                                            {volist name="depList" id="vo"}
+                                            <option value="{$vo.id}">{$vo.name}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-job"><span class="form-required">*</span>岗位</label>
+                                        <select name="job_id" id="input-job" class="form-control">
+                                            <option value="" hidden>请选择岗位</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-jnum"><span class="form-required">*</span>工号</label>
+                                        <input class="form-control" type="text" id="input-jnum" name="job_number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-province"><span class="form-required">*</span>户籍地</label>
+                                        <div class="form-inline">
+                                            <select name="province_id" id="input-province" class="form-control" onchange="provinceChange(this);">
+                                                <option hidden>请选择省份</option>
+                                                {volist name="provinceList" id="vo"}
+                                                <option value="{$vo.id}">{$vo.name}</option>
+                                                {/volist}
+                                            </select>
+                                            <select name="city_id" id="input-city" class="form-control" onchange="cityChange(this);">
+                                                <option hidden>请选择城市</option>
+                                            </select>
+                                            <select name="district_id" id="input-district" class="form-control">
+                                                <option hidden>请选择区县</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="input-phone"><span class="form-required">*</span>手机</label>
+                                        <input type="tel" id="input-phone" name="mobile" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-email"><span class="form-required">*</span>邮箱</label>
+                                        <input type="email" id="input-email" name="email" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-bir"><span class="form-required">*</span>出生时间</label>
+                                        <input class="form-control jeinput" name="birthday" placeholder="请选择时间" type="text" id="input-bir" onfocus=this.blur() >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-employ_date"><span class="form-required">*</span>入职时间</label>
+                                        <input class="form-control jeinput" name="employ_date" placeholder="请选择时间" type="text" id="input-employ_date" onfocus=this.blur() >
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="input-username"><span class="form-required">*</span>登录名</label>
+                                        <label hidden id="error" style="color: red">登录名已存在!</label>
+                                        <input type="text" id="input-username" class="form-control" placeholder="只能包含数字、字母；4-8位" name="username" onblur="checkUsername(this);">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-password"><span class="form-required">*</span>密码</label>
+                                        <input type="password" id="input-password" class="form-control" placeholder="只能包含数字、字母、_、-；6-12位" name="password">
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <button type="submit" class="btn btn-primary">添加</button>
+                                        <a class="btn btn-default" href="{:url('admin/StaffController/index')}">返回</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    //当更换部门时，ajax异步加载岗位select
+    function updateDep(self){
+        var did = self.value;
+        $.post("/index/person/loadJobs",{did:did},function(data){
+            if(data.code == 1){
+                reloadJobs(data);
+            }
+        },"json");
+    }
+    //当更改部门时，加载岗位
+    function reloadJobs(data) {
+        //删除除第一条option以外的所有option(第一条option为"请选择")
+        $("#input-job option:not(:first)").remove();
+
+        var data = data['data'];
+        var select = $("#input-job");
+        for (var i = 0; i < data.length; i++) {
+            select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
+        }
+    }
+    //ajax检验登录名是否重复
+    function checkUsername(self) {
+            var username= self.value;
+            $.post("/admin/staff_controller/checkUsername",{username:username},function(data){
+                debugger;
+                if (data.data==1){
+                    $("#error").removeAttr("hidden");
+                }else{
+                    $("#error").attr("hidden","true");
+                }
+            },"json");
+    }
+    $("#input-employ_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#input-bir").jeDate({
+        format: "YYYY-MM-DD"
+    });
+</script>
+<script type="text/javascript" src="__STATIC__/js/provinceCity.js"></script>
+</html>

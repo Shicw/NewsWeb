@@ -1,0 +1,78 @@
+{include file="public/head" /}
+<title>发布权限管理</title>
+</head>
+
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">发布者权限管理</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="">用户管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/NewsmakerController/index')}">发布者权限管理</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:0px;">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                      <ul class="tabNav">
+                          <li><span><a href="{:url('admin/NewsmakerController/index')}">发布者信息</a></span></li>
+                          <li class="now"><span><a href="{:url('admin/NewsmakerController/add')}">添加发布者</a></span></li>
+                      </ul>
+                        <div class="tabCont" style="height: 200px; display: block;">
+                            <form action="{:url('admin/NewsmakerController/addPost')}" method="post">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="input-department"><span class="form-required">*</span>部门</label>
+                                    <select id="input-department" class="form-control" onchange="showStaff(this)">
+                                        <option value="" hidden>请选择部门</option>
+                                        {volist name="depList" id="vo"}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-staff"><span class="form-required">*</span>姓名</label>
+                                    <select name="staff_id" id="input-staff" class="form-control">
+                                        <option value="" hidden>请选择员工</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary js-ajax-submit">添加</button>
+                                    <a class="btn btn-default" href="newsmaker.html">返回</a>
+                                </div>
+                            </div>
+                            </form>
+                        </div>               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //ajax显示所选部门下的员工列表
+    function showStaff(self) {
+        var dep_id = self.value;
+        $.post("/admin/newsmaker_controller/showStaff",{did:dep_id},function(data){
+            if (data.code==1){
+                $("#input-staff option:not(:first)").remove();
+                var data = data['data'];
+                var select = $("#input-staff");
+                for (var i = 0; i < data.length; i++) {
+                    select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
+                }
+            }
+        },"json");
+    }
+</script>
+</body>
+</html>

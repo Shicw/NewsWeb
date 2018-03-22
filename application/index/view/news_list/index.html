@@ -1,0 +1,94 @@
+{include file="public/head" /}
+<title>{$depName}新闻中心</title>
+</head>
+<body>
+<header class="am-topbar am-topbar-fixed-top wos-header">
+    <div class="am-container">
+        <h1 class="am-topbar-brand">
+            <a href="{:url('index/Index/index')}"><img src="__STATIC__/images/logo.png" alt=""></a>
+        </h1>
+
+        {include file="public/nav" /}
+    </div>
+</header>
+<div class="am-g">
+    <div class="am-u-sm-0 am-u-md-2 am-u-lg-2">&nbsp;</div>
+    <div class="am-u-sm-12 am-u-md-8 am-u-lg-8">
+        <div data-am-widget="list_news" class="am-list-news am-list-news-default ">
+            <div class="am-list-news-bd">
+                <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" style="border-bottom: 0px; margin-bottom: 10px">
+                    <h2 class="am-titlebar-title ">{$depName}新闻中心</h2>
+
+                </div>
+                <!-- 搜索框 -->
+                <form action="{:url('index/NewsList/index',array('id'=>$depId))}" class="am-form am-form-inline" method="post">
+                <div class="am-form-group">
+                    <input id="input-keyword" class="am-form-field am-round" placeholder="关键字" type="text" name="keyword" value="{:input('request.keyword')}">
+                </div>
+                <div class="am-form-group am-form-select">
+                    <select id="input-type" name="type_id"  class="am-round">
+                        <option hidden value="">新闻类别&nbsp;&nbsp;</option>
+                        {volist name="typeList" id="vo"}
+                        {php}$selected=$typeId==$vo['id']?"selected":"";{/php}
+                        <option value="{$vo.id}" {$selected}>{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+                <div class="am-form-group">
+                    <input type="text" class="am-form-field am-round" id="datetimepicker1" class="am-form-field" value="{:input('request.time_begin')}"
+                           placeholder="起始时间" name="time_begin" onfocus=this.blur() />
+                </div>
+                <div class="am-form-group">
+                    <input type="text" class="am-form-field am-round" id="datetimepicker2" class="am-form-field" value="{:input('request.time_end')}"
+                           placeholder="结束时间" name="time_end" onfocus=this.blur() />
+                </div>
+                <div class="am-form-group">
+                    <button class="am-btn am-btn-success am-round" >搜索</button>
+                    <a class="am-btn am-btn-danger am-round" href="{:url('index/NewsList/index',array('id'=>$depId))}">清空</a>
+                </div>
+                </form>
+                {php}if(!$newsList->items()){{/php}
+                  <h3 style="text-align: center">此部门没有新闻！</h3>
+                {php}}else{{/php}
+                  {volist name="newsList" id="vo"}
+                  <ul class="am-list am-list-static am-list-border">
+                    <li><span class="am-badge am-badge-danger">{$vo.create_time}</span>
+                      <span class="am-badge am-badge-success am-radius">{$vo.type}</span>
+                        <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}" style="padding: 0px;color: #000">{$vo.title}</a>
+                   </li>
+                  </ul>
+                  {/volist}
+                  <div class="pagination">{$page}</div>
+                {php}}{/php}
+            </div>
+        </div>
+    </div>
+    <div class="am-u-sm-0 am-u-md-2 am-u-lg-2">&nbsp;</div>
+</div>
+
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+    <a href="#top" title="回到顶部">
+        <span class="am-gotop-title">回到顶部</span>
+        <i class="am-gotop-icon am-icon-chevron-up"></i>
+    </a>
+</div>
+{include file="public/footer" /}
+</body>
+<script>
+    $('#datetimepicker1').datetimepicker({
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+    });
+    $('#datetimepicker2').datetimepicker({
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+
+    });
+</script>
+</html>

@@ -1,0 +1,12 @@
+<footer>
+    <div class="content">
+        <ul class="am-avg-sm-5 am-avg-md-5 am-avg-lg-5 am-thumbnails">
+            <li><a href="{:url('index/Index/index')}">首页</a></li>
+            {volist name="nav" id="vo"}
+            <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+            {/volist}
+        </ul>
+        <p>By Shicw<br> 中小型企业新闻信息发布系统</p>
+        <p>>><a href="/admin/index/login">进入后台</a></p>
+    </div>
+</footer>

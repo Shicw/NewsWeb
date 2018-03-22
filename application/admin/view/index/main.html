@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>主页仪表盘</title>
+	<link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/bootstrap.css">
+	<script type="text/javascript" src="__STATIC__/admin/js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="__STATIC__/admin/js/bootstrap.js"></script>
+	<!--导入绘图所需的js文件和css文件-->
+	<script src="__STATIC__/admin/js/raphael.min.js"></script>
+	<script src="__STATIC__/admin/js/morris.min.js"></script>
+	<link href="__STATIC__/admin/css/morris.css" rel="stylesheet">
+
+	<link href="__STATIC__/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<style>
+		.date{padding-top: 10px;font-size: 15px}
+		.time{padding-top: 4px;font-size: 15px}
+		.solid{border-left: 1px solid #ccc;padding-left: 40px}
+		.message{display: inline-block;margin-left: 50px}
+		img{margin-top: -100px}
+	</style>
+</head>
+<body>
+	<div class="row col-md-12" style="margin: 20px 0 0 0px">
+		<div class="col-md-3">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<i class="fa fa-comments fa-5x"></i>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div>今日评论数</div>
+							<h3 class="huge comment">0</h3>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<i class="fa fa-newspaper-o fa-5x"></i>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div>今日新闻数</div>
+							<h3 class="huge news">0</h3>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<i class="fa fa-users fa-5x"></i>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div>当前在线用户数</div>
+							<h3 class="huge online">0</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<i class="fa fa-clock-o fa-5x"></i>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div>系统时间</div>
+							<div class="huge date">年月日</div>
+							<div class="huge time">00:00:00</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-cloud fa-fw"></i> 本地天气&nbsp;&nbsp;&nbsp; <span id="tips"></span>
+			</div>
+			<div class="panel-body">
+				<div class="today col-md-4">
+					<img src="__STATIC__/admin/images/sun.png" alt="">
+					<div class="message">
+						<p>今天</p>
+						<p>晴天</p>
+						<p>最高</p>
+						<p>最低</p>
+					</div>
+				</div>
+				<div class="tomorrow solid col-md-4">
+					<img src="__STATIC__/admin/images/rain.png" alt="">
+					<div class="message">
+						<p>明天</p>
+						<p>小雨</p>
+						<p>最高</p>
+						<p>最低</p>
+					</div>
+				</div>
+				<div class="afterTomorrow solid col-md-4">
+					<img src="__STATIC__/admin/images/cloud.png" alt="">
+					<div class="message">
+						<p>后天</p>
+						<p>多云</p>
+						<p>最高</p>
+						<p>最低</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-pie-chart fa-fw"></i> 各类别新闻数量
+			</div>
+			<div class="panel-body">
+				<div id="newsTypeChart"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-pie-chart fa-fw"></i> 各部门新闻数量
+			</div>
+			<div class="panel-body">
+				<div id="newsDepChart"></div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+<script>
+	window.onload = function () {
+        //仪表盘数据 ajax定时获取
+	    dashboard();
+        setInterval("dashboard()",10000);
+        //定时每秒自动获取时间
+		getTime();
+		setInterval("getTime()",1000);
+
+		getWeather();
+        setInterval("getWeather()",21600000);//6小时执行一次
+
+		getNewsCount();
+        setInterval("getNewsCount()",3600000);
+    };
+	//获取仪表盘数据
+	function dashboard() {
+		$.post('/admin/Index/dashboard',{},function (result) {
+		    if (result.code==1){
+		        $(".comment").html(result.data['comment']);
+                $(".news").html(result.data['news']);
+                $(".online").html(result.data['online']);
+			}
+        },"json");
+    }
+    //获取系统时间
+    function getTime() {
+        var myDate = new Date();
+        var year=myDate.getFullYear();
+        var month=myDate.getMonth()+1;
+        var day=myDate.getDate();
+        var h=myDate.getHours();       //获取当前小时数(0-23)
+        var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+        var s=myDate.getSeconds();
+        var date = year+"年"+month+"月"+day+"日";
+        var time = add0(h)+":"+add0(m)+":"+add0(s);
+        $(".time").html(time);
+        $(".date").html(date);
+
+    }
+    //时间数字不足两位的补0
+    function add0(num) {
+		 return (num>9) ? num : "0"+num;
+    }
+    //ajax请求api获取天气数据
+    function getWeather() {
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "http://wthrcdn.etouch.cn/weather_mini?city=宁波",
+            success: function (data) {
+                var tips = data.data.ganmao;
+                var today = data.data.forecast[0];
+                var tomorrow = data.data.forecast[1];
+                var afterTomorrow = data.data.forecast[2];
+                //填充数据
+                $("#tips").html("Tips:" + tips);
+                //填充天气数据
+                setWeather(".today", today);
+                setWeather(".tomorrow", tomorrow);
+                setWeather(".afterTomorrow", afterTomorrow);
+                //设置天气img的src
+                matchType(today.type, ".today");
+                matchType(tomorrow.type, ".tomorrow");
+                matchType(afterTomorrow.type, ".afterTomorrow");
+                //console.log(tips);
+                //console.log(today);
+
+            }
+        });
+    }
+    //提取json数据并填充到标签中
+	function setWeather(date,data) {
+        $(date).find('p').eq(0).html(data.date);
+        $(date).find('p').eq(1).html(data.type);
+        $(date).find('p').eq(2).html(data.high);
+        $(date).find('p').eq(3).html(data.low);
+    }
+    //正则匹配天气类型，修改天气img的src
+    function matchType(type,date) {
+        var rain = /\u96e8/;
+        var sun = /\u6674/;
+        var cloud = /\u4e91/;
+        //var overcast = /\u9634/;
+        var imgName =  rain.test(type)?"rain":(sun.test(type)?"sun":(cloud.test(type)?"cloud":"overcast"));
+        $(date).find('img').attr('src','__STATIC__/admin/images/'+imgName+'.png');
+        //console.log(imgName);
+    }
+
+    function getNewsCount(){
+	    $.post("/admin/news_controller/getNewsCount",{},function (result) {
+	        if(result.code==1){
+	            //console.log(result.typeCount);
+	            //console.log(result.depCount);
+	            //console.log(JSON.parse(result.typeCount));
+                //console.log(JSON.parse(result.depCount));
+                //绘制新闻类别数量饼图
+                Morris.Donut({
+                    element: 'newsTypeChart',
+                    data: JSON.parse(result.typeCount),
+                    resize: true
+                });
+                //绘制部门新闻数量条形图
+                Morris.Donut({
+                    element: 'newsDepChart',
+                    data: JSON.parse(result.depCount),
+                    resize: true
+                });
+			}
+        },"json");
+	}
+</script>
+</html>

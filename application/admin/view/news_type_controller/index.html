@@ -1,0 +1,74 @@
+{include file="public/head" /}
+<title>新闻类别管理</title>
+</head>
+
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">新闻类别管理</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="">门户管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/NewsTypeController/index')}">新闻类别管理</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:0px;">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                      <ul class="tabNav">
+                          <li class="now"><span><a href="{:url('admin/NewsTypeController/index')}">新闻类别</a></span></li>
+                          <li><span><a href="{:url('admin/NewsTypeController/add')}">添加新闻类别</a></span></li>
+                      </ul>
+                        <div class="tabCont" style="display:block;">
+                            <form action="{:url('admin/NewsTypeController/index')}" method="post">
+                                <div class="form-group form-inline">
+                                    <div class="form-group">
+                                        关键字：
+                                        <input class="form-control" type="text" name="keyword" style="width: 200px;" value="{:input('request.keyword')}">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="搜索"/>
+                                    <a class="btn btn-danger" href="{:url('admin/NewsTypeController/index')}">清空</a>
+                                </div>
+                            </form>
+                         <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>类别名称</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="typeList" id="vo"}
+                                <tr>
+                                    <td>{$vo.id}</td>
+                                    <td>{$vo.name}</td>
+                                    <td>{$vo.description}</td>
+                                    <td style="width: 250px">
+                                        <a class="label label-primary" href="{:url('admin/NewsTypeController/edit',array('id'=>$vo['id']))}">修改</a>
+                                        <a class="label label-danger" onclick="Dialog({$vo['id']},'delete','删除')" href="javascript:void(0);">删除</a>
+                                    </td>
+                                </tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                        <div class="pagination">{$page}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/admin/js/dialog-layer.js"></script>
+</body>
+</html>

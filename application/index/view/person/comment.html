@@ -1,0 +1,101 @@
+{include file="public/head" /}
+<title>个人中心</title>
+<style>
+    .am-comment-footer{margin:5px 10px;padding:0 2px;border-left:5px solid #ccc}
+    .am-comment-footer a{color: #999;}
+    .comment{border: 1px solid #dedede;margin-top: 10px}
+    .am-comment-bd{padding: 5px 10px}
+</style>
+<title>个人中心</title>
+</head>
+<body>
+<header class="am-topbar am-topbar-fixed-top wos-header">
+    <div class="am-container">
+        <h1 class="am-topbar-brand">
+            <a href="{:url('index/Index/index')}"><img src="__STATIC__/images/logo.png" alt=""></a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-warning am-show-sm-only"
+                data-am-collapse="{target: '#collapse-head'}">
+            <span class="am-sr-only">导航切换</span>
+            <span class="am-icon-bars"></span>
+        </button>
+
+        <div class="am-collapse am-topbar-collapse" id="collapse-head">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li><a href="{:url('index/Index/index')}">首页</a></li>
+                <!--nav仅输出4个部门按钮，多余的放进下拉按钮中-->
+                {volist name="nav" id="vo" length="3"}
+                <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                {/volist}
+                <li class="am-dropdown" data-am-dropdown>
+                    <a class="am-dropdown-toggle">更多部门<span class="am-icon-caret-down"></span></a>
+                    <ul class="am-dropdown-content">
+                        {volist name="nav" id="vo" offset="3" }
+                        <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                        {/volist}
+                    </ul>
+                </li>
+                <li class="am-active"><a href="{:url('index/Person/comment')}">我的评论</a></li>
+            </ul>
+
+            <div class="am-topbar-right" >
+                <div class="am-nav am-nav-pills am-topbar-nav">
+                    <div class="am-dropdown" data-am-dropdown>
+                        <a class="am-btn am-btn-success am-dropdown-toggle" >
+                            {$user.name}&nbsp;<span class="am-icon-caret-down"></span>
+                        </a>
+                        <ul class="am-dropdown-content">
+                            <li><a href="{:url('index/Person/index')}">个人中心</a></li>
+                            <li><a href="{:url('index/Person/comment')}">我的评论</a></li>
+                        </ul>
+                        <a class="am-btn am-btn-danger" href="{:url('index/Login/loginOut')}">注销</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>
+
+<div class="am-g" style="margin-top: 20px">
+    <div class="am-u-sm-0 am-u-md-2 am-u-lg-2">&nbsp;</div>
+    <div class="am-u-sm-12 am-u-md-8 am-u-lg-8">
+        <div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
+            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li class="am-active"><a href="javascript: void(0)">我的评论</a></li>
+            </ul>
+            <div class="am-tabs-bd">
+                <div class="am-tab-panel am-active">
+                    {volist name="list" id="vo"}
+                    <div class="comment">
+                        <header class="am-comment-hd">
+                            <div class="am-comment-meta">
+                                <span class="am-comment-author">{$vo.staff_name}</span>
+                                评论于 <time>{$vo.create_time|date='Y-m-d H:i:s',###}</time>
+                            </div>
+                        </header>
+                        <div class="am-comment-bd">{$vo.comment}</div>
+                        <div class="am-comment-footer">
+                            <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}">{$vo.title}</a>
+                        </div>
+                    </div>
+                    {/volist}
+                    <div class="pagination">{$page}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-u-sm-0 am-u-md-2 am-u-lg-2">&nbsp;</div>
+</div>
+
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+    <a href="#top" title="回到顶部">
+        <span class="am-gotop-title">回到顶部</span>
+        <i class="am-gotop-icon am-icon-chevron-up"></i>
+    </a>
+</div>
+
+{include file="public/footer" /}
+</body>
+</html>

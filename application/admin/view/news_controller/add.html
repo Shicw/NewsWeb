@@ -1,0 +1,118 @@
+{include file="public/head" /}
+<style>#imgDiv{margin-top: 20px;height: 390px;text-align: center;line-height: 390px;padding: 0}
+       #img{height: 389px;max-width: 100%}
+</style>
+
+<title>新闻管理</title>
+</head>
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">新闻管理</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="">门户管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/NewsController/index')}">新闻管理</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:0px;">
+                <div class="tabBox_t">
+                    <div class="tabBox">
+                        <ul class="tabNav">
+                            <li class="now"><span><a href="{:url('admin/NewsController/add')}">添加新闻</a></span></li>
+                        </ul>
+                        <div class="tabCont" style="display:block;height: 650px;">
+                           <form action="{:url('admin/NewsController/addPost')}" enctype="multipart/form-data" method="post">
+                               <div class="col-md-5">
+
+                                   <div class="form-group">
+                                       <label for="input-type"><span class="form-required">*</span>类别</label>
+                                       <select name="type_id" id="input-type" class="form-control">
+                                           <option value="" hidden>请选择类别</option>
+                                           {volist name="typeList" id="vo"}
+                                           <option value="{$vo.id}">{$vo.name}</option>
+                                           {/volist}
+                                       </select>
+                                   </div>
+                                   <div class="form-group">
+                                       <label for="input-department"><span class="form-required">*</span>部门</label>
+                                       <select name="dep_id" id="input-department" class="form-control">
+                                           <option value="" hidden>请选择部门</option>
+                                           {volist name="depList" id="vo"}
+                                           <option value="{$vo.id}">{$vo.name}</option>
+                                           {/volist}
+                                       </select>
+                                   </div>
+                                   <div class="form-group">
+                                       <label for="input-title"><span class="form-required">*</span>新闻标题</label>
+                                       <input type="text" id="input-title" name="title" class="form-control">
+                                   </div>
+                                   <div class="form-group">
+                                       <label for="input-content"><span class="form-required">*</span>新闻内容</label>
+                                       <!-- 加载UEditor编辑器的容器 -->
+                                       <script id="input-content" name="content" type="text/plain"></script>
+                                   </div>
+                               </div>
+                               <div class="col-md-7" style="margin-top: 60px">
+                                   <div class="form-group">
+                                       <label for="input-img">&nbsp;添加图片</label>
+                                       <input type="file" id="input-img" name="image" accept="image/png, image/jpeg"/>
+                                       <div class="form-control" id="imgDiv"><img src="" id="img" hidden></div>
+                                   </div>
+                                   <div class="form-group">
+                                       <button type="submit" class="btn btn-primary">添加</button>
+                                       <a class="btn btn-default" href="{:url('admin/NewsController/index')}">返回</a>
+                                   </div>
+                               </div>
+                           </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#input-img').change(function () {
+        //获取当前上传图片
+        var imgData = this.files[0];
+        //获取图片的大小
+        var imgSize = imgData.size;
+        //console.log(imgData);
+        //新建一个文件读取对象
+        var imgRead = new FileReader();
+        //要读取的文件对象
+        imgRead.readAsDataURL(imgData);
+        //当读取成功时，创建image对象，将读取到的图片信息放入src
+        imgRead.onload = function() {
+            var aImage = new Image();
+            aImage.src = this.result;
+
+            $('#img').removeAttr('hidden');
+            $('#img').attr('src',aImage.src);
+        };
+    });
+</script>
+<!-- UEditor配置文件 -->
+<script type="text/javascript" src="__STATIC__/admin/ueditor-php/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="__STATIC__/admin/ueditor-php/ueditor.all.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    var ue = UE.getEditor('input-content',{
+        initialFrameHeight:280,
+        initialFrameWidth: null,
+        autoHeightEnabled:false,
+        maximumWords:800
+    });
+</script>
+</body>
+</html>

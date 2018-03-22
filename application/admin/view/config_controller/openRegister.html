@@ -1,0 +1,44 @@
+{include file="public/head" /}
+<title>开启/关闭注册</title>
+</head>
+<body>
+<div id="right_ctn">
+    <div class="right_m">
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">开启/关闭注册</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a href="{:url('admin/Index/Index')}" target="_top"><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
+                    <a href="{:url('admin/Index/Index')}" target="_top">首页</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/ConfigController/openRegister')}">开启/关闭注册</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <div class="xjhy" style="padding:10px 0;height: 150px">
+                <div class="tabBox">
+                    <form action="{:url('admin/ConfigController/openRegisterPost')}" method="post">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>开启/关闭注册功能：</label>
+                                <div class="form-control">
+                                    {php}
+                                       $checked1=$openRegister?"checked":"";
+                                       $checked2=$openRegister?"":"checked";
+                                    {/php}
+                                    <input type="radio" value="1" name="openRegister" {$checked1}>开启
+                                    <input type="radio" value="0" name="openRegister" {$checked2}>关闭
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="submit" >保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

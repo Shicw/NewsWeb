@@ -1,0 +1,117 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" >
+<title>左边导航</title>
+<link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/reset.css"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/common.css"/>
+<script type="text/javascript" src="__STATIC__/admin/js/jquery-1.11.3.js"></script>
+<link href="__STATIC__/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+   $(function(){
+      $('.sidenav li').click(function(){
+          $(this).siblings('li').removeClass('now');
+          $(this).addClass('now');
+      });
+
+      $('.erji li').click(function(){
+          $(this).siblings('li').removeClass('now_li');
+          $(this).addClass('now_li');
+      });
+
+   })
+</script>
+
+</head>
+
+<body>
+<div id="left_ctn">
+    <ul class="sidenav">
+        <li class="now">
+            <div class="nav_m">
+                <span><a href="{:url('admin/Index/main')}" target="main">首页仪表盘</a></span>
+            </div>
+        </li>
+        {php}if($staffType == 2){{/php}
+        <li>
+            <div class="nav_m">
+                <span><a>新闻管理</a></span>
+                <i>&nbsp;</i>
+            </div>
+            <ul class="erji">
+                <li class="now_li">
+                    <span><a href="{:url('admin/NewsController/add')}" target="main">发布新闻</a></span>
+                </li>
+                <li>
+                    <span><a href="{:url('admin/NewsController/index')}" target="main">我的发布记录</a></span>
+                </li>
+            </ul>
+        </li>
+        {php}}else{{/php}
+        <li>
+            <div class="nav_m">
+                <span><a>用户管理</a></span>
+                <i>&nbsp;</i>
+            </div>
+            <ul class="erji">
+                <li>
+                    <span><a href="{:url('admin/DepartmentController/index')}" target="main">部门管理</a></span>
+                </li>
+                <li>
+                    <span><a href="{:url('admin/JobsController/index')}" target="main">岗位管理</a></span>
+                </li>
+                <li>
+                    <span><a href="{:url('admin/StaffController/index')}" target="main">人员管理</a></span>
+                </li>
+                <li><span><a href="{:url('admin/NewsmakerController/index')}" target="main">发布者权限管理</a></span></li>
+            </ul>
+        </li>
+        <li>
+            <div class="nav_m">
+                <span><a>门户管理</a></span>
+                <i>&nbsp;</i>
+            </div>
+            <ul class="erji">
+                <li>
+                    <span><a href="{:url('admin/NewsTypeController/index')}" target="main">新闻类别管理</a></span>
+                </li>
+                <li>
+                    <span><a href="{:url('admin/NewsController/index')}" target="main">新闻管理</a></span>
+                </li>
+                <li>
+                    <span><a href="{:url('admin/CommentController/index')}" target="main">评论管理</a></span>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="nav_m">
+                <span><a>系统信息设置</a></span>
+                <i>&nbsp;</i>
+            </div>
+            <ul class="erji">
+                <li>
+                    <span><a href="{:url('admin/SlideController/index')}" target="main">首页轮播新闻设置</a></span>
+                </li>
+                <li>
+                    <span><a href="{:url('admin/ConfigController/openRegister')}" target="main">开启/关闭注册</a></span>
+                </li>
+                <li>
+                    <span><a href="{:url('admin/ConfigController/mailer')}" target="main">验证码邮箱设置</a></span>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="nav_m">
+                <span><a href="{:url('admin/LogsController/index')}" target="main">系统日志信息</a></span>
+            </div>
+        </li>
+        {php}}{/php}
+        <li>
+            <div class="nav_m">
+                <span><a href="{:url('admin/ChangePasswordController/index')}" target="main">修改密码</a></span>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
