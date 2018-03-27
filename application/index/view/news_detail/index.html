@@ -16,14 +16,21 @@
     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
         <div class="newstitles">
             <h2>{$data['title']}</h2>
-            <span>{$data['publisher']}</span>
-            时间:{$data['create_time']|date='Y-m-d H:i:s',###}   阅读:{$data['view_num']}  评论:{$data['comment_num']}
+            <span><i class="fa fa-user"></i>&nbsp;{$data['publisher']}</span>
+            &nbsp;<i class="fa fa-clock-o"></i>&nbsp;{$data['create_time']|date='Y-m-d H:i',###}
+            &nbsp;<i class="fa fa-eye"></i>&nbsp;{$data['view_num']}
+            &nbsp;<i class="fa fa-commenting-o"></i>&nbsp;{$data['comment_num']}
+            &nbsp;<a href="javascript:" onclick="collect({$data['id']})" title="收藏">
+            {php}$icon = $collect ? "fa fa-heart" : "fa fa-heart-o";{/php}
+                    <i class="{$icon}" id="collect"></i>
+                  </a>
         </div>
         <!--新闻内容-->
         <div class="contents">
             <p dir="ltr"><span style="color: rgb(88, 88, 88); font-family: arial, &#39;microsoft yahei&#39;, 宋体; line-height: 28px; text-align: justify; font-size: 16px; background-color: rgb(255, 255, 255);">{$data['content']}</span></p>
-            {php}$hidden=$data['img']?"":"hidden"{/php}
-            <img src="__STATIC__/news_imgs/{$data['img']}" {$hidden} class="am-u-sm-12 am-u-md-8">
+            {php}if($data['img']){{/php}
+            <img src="__STATIC__/news_imgs/{$data['img']}" class="am-u-sm-12 am-u-md-8">
+            {php}}{/php}
         </div>
     </div>
     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
@@ -31,8 +38,9 @@
         <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" style="margin-bottom: 20px">
             <h2 class="am-titlebar-title">评论区</h2>
         </div>
-        <!--查询数据库返回的$comment是一个对象，其中的items表示查询到的记录数-->
-        {php}if(!$comment->items()){{/php}
+        <!--查询数据库返回的$comment，其中的items表示查询到的记录数-->
+        {php} //dump ($comment->items());
+        if(!$comment->items()){{/php}
         <h3 style="text-align: center">还没有人发表评论</h3>
         {php}}else{{/php}
         {volist name="comment" id="vo"}
@@ -40,11 +48,11 @@
              <article class="am-comment">
                  <!--评论用户头像-->
                  {php}$src=$vo['avatar']?$vo['avatar']:"avatar.png"{/php}
-                 <img src="__STATIC__/avatar/{$src}" alt="" class="am-comment-avatar" width="48" height="48"/>
+                 <img src="__STATIC__/avatar/{$src}" onclick="showStaff({$vo['staff_id']})" id="{$vo['staff_id']}" class="am-comment-avatar" width="48" height="48"/>
               <div class="am-comment-main">
                    <header class="am-comment-hd">
                        <div class="am-comment-meta">
-                         <a href="#" class="am-comment-author">{$vo.staff_name}</a>
+                         <a class="am-comment-author">{$vo.staff_name}</a>
                          评论于 <time>{$vo.create_time|date='Y-m-d H:i:s',###}</time>
                        </div>
                    </header>
@@ -64,7 +72,7 @@
            <article class="am-comment am-comment-flip am-comment-secondary">
                <!--我的头像-->
                {php}$src=$user['avatar']?$user['avatar']:"avatar.png"{/php}
-               <img src="__STATIC__/avatar/{$src}" alt="" class="am-comment-avatar" width="48" height="48"/>
+               <img src="__STATIC__/avatar/{$src}" class="am-comment-avatar" width="48" height="48"/>
                <div class="am-comment-main">
                     <header class="am-comment-hd">
                         <div class="am-comment-meta">请在此输入评论</div>
@@ -100,9 +108,47 @@
 {include file="public/footer" /}
 </body>
 <script>
+    //收藏 ajax
+    function collect(id) {
+        $.post("/index/news_detail/collect",{id:id},function (result) {
+            var msg = ""; var collect = $("#collect");
+            switch (result.code){
+                case 0: msg = "未登录不能收藏";
+                    break;
+                case 1: msg = "收藏成功";
+                    collect.removeClass('fa-heart-o').addClass('fa-heart');
+                    break;
+                case 2: msg = "收藏失败";
+                    break;
+                case 3: msg = "取消收藏";
+                    collect.removeClass('fa-heart').addClass('fa-heart-o');
+                    break;
+                case 4: msg = "取消收藏失败";
+                    break;
+            }
+            layer.msg(msg,{time:1000});
+        },"json");
+    }
+    //点击头像显示用户信息 ajax
+    function showStaff(staffId) {
+        $.post("/index/news_detail/showStaff",{id:staffId},function (result) {
+            var data = result.data;
+            //查询返回值拼接成字符串放入layer
+            var msg = data['dep']+"--"+data['job']+
+            "<br><i class='fa fa-phone fa-lg'></i>&nbsp;"+data['mobile']+
+            "<br><i class='fa fa-envelope'></i>&nbsp;"+data['email'];
+            var tips = layer.tips(msg,"#"+staffId,{time:30000});
+            //点击空白处，关闭layer.tips
+            $('body').click(function () {
+                layer.close(tips);
+            });
+        },"json");
+    }
     $("#doc-prompt-toggle").click(function(){
         if (document.inputcomment.comment.value=="") {
-          alert("评论不能为空！");document.inputcomment.comment.focus();return false;}
+          layer.msg('评论不能为空',{time:1000});
+          document.inputcomment.comment.focus();return false;
+        }
     });
 </script>
 </html>
