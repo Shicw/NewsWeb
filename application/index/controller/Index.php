@@ -8,7 +8,6 @@ use think\Db;
 class Index extends UserBaseController
 {
   public function index(){
-      $this->autoLoginout();
     //导航栏加载
     $nav = $this->navList();
     //获取前台登录的用户信息

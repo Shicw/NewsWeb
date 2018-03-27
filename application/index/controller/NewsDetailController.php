@@ -45,7 +45,7 @@ class NewsDetailController extends UserBaseController
         ]);
         return $this->fetch();
     }
-    //发表评论
+    //发表评论 ajax
     public function comment(){
         //PHP后端验证
         if ($this->request->isPost()) {
@@ -60,24 +60,28 @@ class NewsDetailController extends UserBaseController
                 $this->error($validate->getError());
             }
             //评论数据数组
+            $userId = session('user.id');
+            $time = time();
             $commentData = [
                 'news_id' => $data['newsId'],
                 'comment' => $data['comment'],
-                'staff_id' => session('user.id'),
+                'staff_id' => $userId,
                 'staff_name' => session('user.name'),
-                'create_time' => time(),
+                'create_time' => $time,
             ];
             //将评论写入comment表
             $result1 = Db::name('comment')->insert($commentData);
             //将news表中新闻comment_num字段加1
             $result2 = Db::name('news')->where(['id'=>$data['newsId'],'delete_time'=>0])->setInc('comment_num',1);
             if ($result1 && $result2){
-                $this->success('评论成功！',url('index/NewsDetailController/index',array('id'=>$data['newsId'])),'新闻评论：'.$data['title']);
+                //写入日志表
+                Db::name('logs')->insert(['msg'=>'评论成功！','data'=>'新闻评论：'.$data['title'],'staff_id'=>$userId,'create_time'=>$time]);
+                return json(['code'=>1]);
             }else{
-                $this->error('评论失败！');
+                return json(['code'=>0]);
             }
         }else {
-            $this->error("请求错误!");
+            return json(['code'=>0]);
         }
     }
     //收藏 0：未登录 1：收藏成功 2：收藏失败 3：取消收藏 4：取消失败
@@ -96,11 +100,21 @@ class NewsDetailController extends UserBaseController
                 $result = $table->where(['staff_id'=>$userId,'news_id'=>$id,'delete_time'=>0])->setField('delete_time',time());
                 $code = $result ? 3 : 4;
                 //操作成功写入日志，此处是返回给ajax，不方便调用success方法来写日志
-                if($code == 3) Db::name('logs')->insert(['msg'=>'取消收藏成功！','data'=>'取消收藏：'.$news['title'],'staff_id'=>$userId]);
+                if($code == 3) Db::name('logs')->insert([
+                    'msg'=>'取消收藏成功！',
+                    'data'=>'取消收藏：'.$news['title'],
+                    'staff_id'=>$userId,
+                    'create_time' => time()
+                ]);
             }else{//添加收藏
                 $result = $table->insert(['staff_id'=>$userId,'news_id'=>$id,'create_time'=>time()]);
                 $code = $result ? 1 : 2;
-                if($code == 1) Db::name('logs')->insert(['msg'=>'添加收藏成功！','data'=>'添加收藏：'.$news['title'],'staff_id'=>$userId]);
+                if($code == 1) Db::name('logs')->insert([
+                    'msg'=>'添加收藏成功！',
+                    'data'=>'添加收藏：'.$news['title'],
+                    'staff_id'=>$userId,
+                    'create_time' => time()
+                ]);
 
             }
             return json(['code' => $code]);

@@ -1,5 +1,5 @@
 {include file="public/head" /}
-<title>我的评论</title>
+<title>我的收藏</title>
 <style>
     .am-comment-footer{margin:5px 10px;padding:0 2px;border-left:5px solid #ccc}
     .am-comment-footer a{color: #999;}
@@ -35,7 +35,7 @@
                         {/volist}
                     </ul>
                 </li>
-                <li class="am-active"><a href="{:url('index/PersonController/comment')}">我的评论</a></li>
+                <li class="am-active"><a href="{:url('index/PersonController/collection')}">我的收藏</a></li>
             </ul>
 
             <div class="am-topbar-right" >
@@ -68,18 +68,14 @@
             <div class="am-tabs-bd">
                 <div class="am-tab-panel am-active">
                     {volist name="list" id="vo"}
-                    <div class="comment">
-                        <header class="am-comment-hd">
-                            <div class="am-comment-meta">
-                                <span class="am-comment-author">{$vo.staff_name}</span>
-                                评论于 <time>{$vo.create_time|date='Y-m-d H:i:s',###}</time>
-                            </div>
-                        </header>
-                        <div class="am-comment-bd">{$vo.comment}</div>
-                        <div class="am-comment-footer">
-                            <a href="{:url('index/NewsDetailController/index',array('id'=>$vo['id']))}">{$vo.title}</a>
-                        </div>
-                    </div>
+                    <ul class="am-list am-list-static am-list-border">
+                        <li>
+                            <span class="am-badge am-badge-success am-radius">{$vo.type}</span>
+                            <span class="am-badge am-badge-secondary am-radius">{$vo.dep}</span>
+                            <span class="am-badge am-badge-error am-radius">{$vo.ncreate_time|date='Y-m-d H:i:s',###}</span>
+                            <a href="{:url('index/NewsDetailController/index',array('id'=>$vo['id']))}" style="padding: 0">{$vo.title}</a>
+                        </li>
+                    </ul>
                     {/volist}
                     <div class="pagination">{$page}</div>
                 </div>

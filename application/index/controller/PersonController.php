@@ -155,6 +155,31 @@ class PersonController extends UserBaseController
         ]);
         return $this->fetch();
     }
+    //我的收藏
+    public function collection(){
+        //导航栏
+        $nav = $this->navList();
+        //读取前台登录的用户信息
+        $user = session('user');
+        //我的收藏列表
+        $id = $user['id'];
+        //查询收藏列表，关联news,type,department表
+        $list = Db::name('collection c')->join([
+            ['news n','n.id=c.news_id'],
+            ['department d','d.id=n.dep_id'],
+            ['news_type nt','nt.id=n.type_id']
+        ])->field(['n.id','n.title','n.create_time ncreate_time','d.name dep','nt.name type','c.create_time'])
+            ->where(['c.delete_time'=>0,'c.staff_id'=>$id])->order('c.create_time desc')->paginate(10);
+        //获取分页显示
+        $page = $list->render();
+        $this->assign([
+            'nav'  => $nav,
+            'user' => $user,
+            'list' => $list,
+            'page' => $page
+        ]);
+        return $this->fetch();
+    }
     //接收ajax发送的dep_id值，查询所对应的岗位列表，返回
     public function loadJobs($did){
         $data = Db::name('jobs')->where(['delete_time'=>0,'dep_id'=>$did])->select();
