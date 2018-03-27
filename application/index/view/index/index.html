@@ -31,7 +31,7 @@
                 <ul class="am-slides">
                     {volist name="Slide" id="vo"}
                     <li>
-                        <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}"><img src="__STATIC__/news_imgs/{$vo.img}" class="am-u-sm-12 am-u-md-12 am-u-md-8" style="max-height: 455px;"></a>
+                        <a href="{:url('index/NewsDetailController/index',array('id'=>$vo['id']))}"><img src="__STATIC__/news_imgs/{$vo.img}" class="am-u-sm-12 am-u-md-12 am-u-md-8" style="max-height: 455px;"></a>
                         <div class="am-slider-desc">{$vo.title}</div>
                     </li>
                     {/volist}
@@ -45,7 +45,7 @@
                 {volist name="mainDep" id="vo"}
                 <li>
                     <div class="am-gallery-item">
-                        <a href="{:url('index/NewsList/index',array('id'=>$vo['id']))}">
+                        <a href="{:url('index/NewsListController/index',array('id'=>$vo['id']))}">
                             <img src="__STATIC__/images/lins.png"/>
                             <h3 class="am-gallery-title">{$vo.name}</h3>
                         </a>
@@ -69,7 +69,7 @@
               <span class="am-badge am-badge-success am-radius">{$vo.type}</span>
               <span class="am-badge am-badge-secondary am-radius">{$vo.dep}</span>
                <span class="am-badge am-badge-error am-radius">{$vo.create_time}</span>
-              <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}" style="padding: 0">{$vo.title}</a>
+              <a href="{:url('index/NewsDetailController/index',array('id'=>$vo['id']))}" style="padding: 0">{$vo.title}</a>
            </li>
         </ul>
         {/volist}
@@ -89,7 +89,7 @@
             </header>
             <div class="am-comment-bd">{$vo.comment}</div>
             <div class="am-comment-footer">
-                <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}" title="点击查看新闻详情">{$vo.title}</a>
+                <a href="{:url('index/NewsDetailController/index',array('id'=>$vo['id']))}" title="点击查看新闻详情">{$vo.title}</a>
             </div>
         </div>
         {/volist}
@@ -103,25 +103,25 @@
                  <img src="__STATIC__/admin/images/sun.png" alt="">
                  <div class="message">
                      <p>今天</p>
-                     <p>晴天</p>
+                     <p>天气</p>
                      <p>最高</p>
                      <p>最低</p>
                  </div>
              </div>
              <div class="tomorrow solid am-u-md-4">
-                 <img src="__STATIC__/admin/images/rain.png" alt="" >
+                 <img src="__STATIC__/admin/images/sun.png" alt="" >
                  <div class="message">
                      <p>明天</p>
-                     <p>小雨</p>
+                     <p>天气</p>
                      <p>最高</p>
                      <p>最低</p>
                  </div>
              </div>
              <div class="afterTomorrow solid am-u-md-4">
-                 <img src="__STATIC__/admin/images/cloud.png" alt="" >
+                 <img src="__STATIC__/admin/images/sun.png" alt="" >
                  <div class="message">
                      <p>后天</p>
-                     <p>多云</p>
+                     <p>天气</p>
                      <p>最高</p>
                      <p>最低</p>
                  </div>

@@ -9,7 +9,7 @@ namespace app\index\controller;
 use app\UserBaseController;
 use think\Validate;
 use think\Db;
-class Register extends UserBaseController
+class RegisterController extends UserBaseController
 {
     public function index(){
         //导航栏
@@ -62,7 +62,7 @@ class Register extends UserBaseController
             if ($userId && $data) {
                 //注册成功后更新用户最后登录时间,online字段置1，跳转到个人中心
                 Db::name('staff')->where('id',$userId)->update(['last_login_time'=>time(),'online'=>1]);
-                $this->success('注册成功！已为您自动登录，请修改您的个人资料', url('index/Person/index'),'用户注册');
+                $this->success('注册成功！已为您自动登录，请修改您的个人资料', url('index/PersonController/index'),'用户注册');
             }
         }else {
             $this->error("请求错误");

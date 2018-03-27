@@ -9,7 +9,7 @@ namespace app\index\controller;
 use app\UserBaseController;
 use think\Validate;
 use think\Db;
-class NewsDetail extends UserBaseController
+class NewsDetailController extends UserBaseController
 {
     public function index(){
 
@@ -72,7 +72,7 @@ class NewsDetail extends UserBaseController
             //将news表中新闻comment_num字段加1
             $result2 = Db::name('news')->where(['id'=>$data['newsId'],'delete_time'=>0])->setInc('comment_num',1);
             if ($result1 && $result2){
-                $this->success('评论成功！',url('index/NewsDetail/index',array('id'=>$data['newsId'])),'新闻评论：'.$data['title']);
+                $this->success('评论成功！',url('index/NewsDetailController/index',array('id'=>$data['newsId'])),'新闻评论：'.$data['title']);
             }else{
                 $this->error('评论失败！');
             }

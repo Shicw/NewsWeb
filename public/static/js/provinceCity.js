@@ -1,7 +1,7 @@
 function provinceChange(self) {
     var pid = self.value;
     //url路径中控制器名必须用匈牙利命名方式(下划线),不能用驼峰式(大小写);路径需要绝对路径
-    $.post("/index/province_city/loadChildren", {pid: pid, level: 2}, function (data) {
+    $.post("/index/province_city_controller/loadChildren", {pid: pid, level: 2}, function (data) {
 
         if (data.code == 1) {
 
@@ -22,7 +22,7 @@ function reloadCity(data) {
 
 function cityChange(self) {
     var pid = self.value;
-    $.post("/index/province_city/loadChildren", {pid: pid, level: 3}, function (data) {
+    $.post("/index/province_city_controller/loadChildren", {pid: pid, level: 3}, function (data) {
         if (data.code == 1) {
             reloadDistrict(data);
         }

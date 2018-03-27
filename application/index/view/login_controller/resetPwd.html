@@ -20,29 +20,29 @@
                 <li><a href="{:url('index/Index/index')}">首页</a></li>
                 <!--nav仅输出4个部门按钮，多余的放进下拉按钮中-->
                 {volist name="nav" id="vo" length="3"}
-                <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                <li><a href="{:url('NewsListController/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
                 {/volist}
                 <li class="am-dropdown" data-am-dropdown>
                     <a class="am-dropdown-toggle">更多部门<span class="am-icon-caret-down"></span></a>
                     <ul class="am-dropdown-content">
                         {volist name="nav" id="vo" offset="3" }
-                        <li><a href="{:url('NewsList/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
+                        <li><a href="{:url('NewsListController/index',array('id'=>$vo['id']))}">{$vo.name}</a></li>
                         {/volist}
                     </ul>
                 </li>
             </ul>
             <div class="am-topbar-right">
-                <a href="{:url('index/Register/index')}" class="am-btn am-btn-success am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</a>
+                <a href="{:url('index/RegisterController/index')}" class="am-btn am-btn-success am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</a>
             </div>
 
             <div class="am-topbar-right">
-                <a href="{:url('index/Login/index')}" class="am-btn am-btn-danger am-topbar-btn am-btn-sm login"><span class="am-icon-user"></span> 登录</a>
+                <a href="{:url('index/LoginController/index')}" class="am-btn am-btn-danger am-topbar-btn am-btn-sm login"><span class="am-icon-user"></span> 登录</a>
             </div>
         </div>
     </div>
 </header>
 <div class="am-container">
-    <form action="{:url('Login/resetPwdPost')}" class="am-form" data-am-validator method="post">
+    <form action="{:url('LoginController/resetPwdPost')}" class="am-form" data-am-validator method="post">
         <div class="am-u-sm-12 am-u-md-5 am-u-md-centered " style="margin-top: 50px">
             <legend>密码重置</legend>
             <div class="am-form-group">
@@ -79,7 +79,7 @@
     //ajax将邮箱传给后端php
     function getCode () {
         var load = layer.load(0, {shade: false});
-        $.post("/index/login/sendCode",{userEmail:email.val()},function (result) {
+        $.post("/index/login_controller/sendCode",{userEmail:email.val()},function (result) {
             if (result.status==1){
                 $("#getCode").attr('disabled',true);
                 layer.close(load);

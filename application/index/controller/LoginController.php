@@ -9,7 +9,7 @@ namespace app\index\controller;
 use app\UserBaseController;
 use think\Validate;
 use think\Db;
-class Login extends UserBaseController
+class LoginController extends UserBaseController
 {
     public function index(){
         //导航栏
@@ -27,11 +27,11 @@ class Login extends UserBaseController
 
 
         if (!cmf_captcha_check($captcha)){
-            $this->error('验证码错误！',url('index/Login/index'),'用户登录');
+            $this->error('验证码错误！',url('index/LoginController/index'),'用户登录');
         }
         $result = Db::name('staff')->where(['username'=>$username,'delete_time'=>0])->find();
         if ($result){
-            if ($result['status']==0) $this->error('该帐号被限制登录！',url('index/Login/index'),'用户登录');
+            if ($result['status']==0) $this->error('该帐号被限制登录！',url('index/LoginController/index'),'用户登录');
             if ($result['username']==$username&&$result['password']==$password) {
                 //将登录用户信息写进session
                 session('user', $result);
@@ -73,7 +73,7 @@ class Login extends UserBaseController
             //重置staff表的用户密码
             $result = Db::name('staff')->where(['delete_time'=>0,'username'=>$username])->update(['password'=>$newPassword]);
             if ($result){
-                $this->success('密码重置成功！',url('index/Login/index'),'密码重置');
+                $this->success('密码重置成功！',url('index/LoginController/index'),'密码重置');
             }else{
                 $this->error('密码重置失败！请重试');
             }

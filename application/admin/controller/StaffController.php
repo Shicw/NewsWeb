@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 use app\AdminBaseController;
 use app\admin\model\Staff;
+use app\index\model\ProvinceCity;
 use think\Db;
 use think\Validate;
 class StaffController extends AdminBaseController
@@ -100,7 +101,7 @@ class StaffController extends AdminBaseController
         //php后端验证
         if ($this->request->isPost()) {
             $validate = new Validate([
-                'name' => 'require|chs|min:6|max:12',
+                'name' => 'require|chs|min:2|max:12',
                 'sex' => 'require|integer',
                 'dep_id' => 'require|integer',
                 'job_id' => 'require|integer',
@@ -157,9 +158,10 @@ class StaffController extends AdminBaseController
         //根据id查找对应用户的信息
         $data = $this->model->where('id',$id)->find();
         //省市区赋值
-        $provinceList = Db::name('province_city')->where(['level'=>1,'delete_time'=>0])->select();
-        $cityList = Db::name('province_city')->where(['level' => 2, 'parent_id' => $data['province_id']])->select();
-        $districtList = Db::name('province_city')->where(['level' => 3, 'parent_id' => $data['city_id']])->select();
+        $provinceCity = new ProvinceCity();
+        $provinceList = $provinceCity->where(['level'=>1,'delete_time'=>0])->select();
+        $cityList = $provinceCity->where(['level' => 2, 'parent_id' => $data['province_id']])->select();
+        $districtList = $provinceCity->where(['level' => 3, 'parent_id' => $data['city_id']])->select();
         //部门岗位赋值
         $depList = Db::name('department')->where('delete_time',0)->select();
         $jobList = Db::name('jobs')->where(['delete_time'=>0,'dep_id'=>$data['dep_id']])->select();
@@ -174,13 +176,12 @@ class StaffController extends AdminBaseController
         return $this->fetch();
 
     }
-    //TODO 没有新修改信息提交成功BUG
     //人员修改提交
     public function editPost(){
         //php后端验证
         if ($this->request->isPost()) {
             $validate = new Validate([
-                'name' => 'require|chs|min:6|max:12',
+                'name' => 'require|chs|min:2|max:12',
                 'sex' => 'require|integer',
                 'dep_id' => 'require|integer',
                 'job_id' => 'require|integer',

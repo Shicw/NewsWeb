@@ -21,7 +21,7 @@
 
                 </div>
                 <!-- 搜索框 -->
-                <form action="{:url('index/NewsList/index',array('id'=>$depId))}" class="am-form am-form-inline" method="post">
+                <form action="{:url('index/NewsListController/index',array('id'=>$depId))}" class="am-form am-form-inline" method="post">
                 <div class="am-form-group">
                     <input id="input-keyword" class="am-form-field am-round" placeholder="关键字" type="text" name="keyword" value="{:input('request.keyword')}">
                 </div>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="am-form-group">
                     <button class="am-btn am-btn-success am-round" >搜索</button>
-                    <a class="am-btn am-btn-danger am-round" href="{:url('index/NewsList/index',array('id'=>$depId))}">清空</a>
+                    <a class="am-btn am-btn-danger am-round" href="{:url('index/NewsListController/index',array('id'=>$depId))}">清空</a>
                 </div>
                 </form>
                 {php}if(!$newsList->items()){{/php}
@@ -54,7 +54,7 @@
                   <ul class="am-list am-list-static am-list-border">
                     <li><span class="am-badge am-badge-danger">{$vo.create_time}</span>
                       <span class="am-badge am-badge-success am-radius">{$vo.type}</span>
-                        <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}" style="padding: 0px;color: #000">{$vo.title}</a>
+                        <a href="{:url('index/NewsDetailController/index',array('id'=>$vo['id']))}" style="padding: 0px;color: #000">{$vo.title}</a>
                    </li>
                   </ul>
                   {/volist}

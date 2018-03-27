@@ -62,13 +62,4 @@ class UserBaseController extends Controller
         session('user', null);
         parent::success($msg, $url, $data, $wait, $header);
     }
-    //关闭浏览器后会自动清除session，此时需要自动为用户注销，online置0
-    public function autoLoginout(){
-        $id = session('user.id');
-        if (!session('user')){
-            //自动注销，online字段置0
-            Db::name('staff')->where(['delete_time'=>0,'id'=>session('user.id')])->update(['online'=>0]);
-        }
-    }
-
 }

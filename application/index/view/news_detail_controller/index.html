@@ -67,7 +67,7 @@
         {php}}{/php}
         <!-- 评论区 -->
         <!-- 发表评论 -->
-        <form name="inputcomment" action="{:url('index/NewsDetail/comment')}" method="post" style="margin-top: 40px">
+        <form name="inputcomment" action="{:url('index/NewsDetailController/comment')}" method="post" style="margin-top: 40px">
         <div class="am-comments-list am-comments-list-flip">
            <article class="am-comment am-comment-flip am-comment-secondary">
                <!--我的头像-->
@@ -110,7 +110,7 @@
 <script>
     //收藏 ajax
     function collect(id) {
-        $.post("/index/news_detail/collect",{id:id},function (result) {
+        $.post("/index/news_detail_controller/collect",{id:id},function (result) {
             var msg = ""; var collect = $("#collect");
             switch (result.code){
                 case 0: msg = "未登录不能收藏";
@@ -131,7 +131,7 @@
     }
     //点击头像显示用户信息 ajax
     function showStaff(staffId) {
-        $.post("/index/news_detail/showStaff",{id:staffId},function (result) {
+        $.post("/index/news_detail_controller/showStaff",{id:staffId},function (result) {
             var data = result.data;
             //查询返回值拼接成字符串放入layer
             var msg = data['dep']+"--"+data['job']+

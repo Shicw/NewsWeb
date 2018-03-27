@@ -10,7 +10,7 @@ use app\admin\model\News;
 use app\UserBaseController;
 use think\Validate;
 use think\Db;
-class NewsList extends UserBaseController
+class NewsListController extends UserBaseController
 {
     private $model;
     //初始化模型对象
@@ -28,14 +28,13 @@ class NewsList extends UserBaseController
         $id = $this->request->param('id');
         $dep = Db::name('department')->field(['name'])->where(['id'=>$id,'delete_time'=>0])->find();
         $depName = $dep['name'];
-        //关键字查询
+        //按照新闻标题关键字查询
         $request = input('request.');
         $keyword = '';
         $conditions = [];
         if (!empty($request['keyword'])) {
             $keyword = $request['keyword'];
-
-            $conditions['n.title|n.content'] = ['like', "%$keyword%"];
+            $conditions['n.title'] = ['like', "%$keyword%"];
         }
         //类别查询
         $type_id = '';

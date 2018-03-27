@@ -6,12 +6,12 @@
  * Time: 18:20
  */
 namespace app\index\controller;
-use app\index\model\ProvinceCityModel;
+use app\index\model\ProvinceCity;
 use app\index\model\Staff;
 use app\UserBaseController;
 use think\Validate;
 use think\Db;
-class Person extends UserBaseController
+class PersonController extends UserBaseController
 {
     public function index(){
         //导航栏
@@ -26,7 +26,7 @@ class Person extends UserBaseController
             $jobList = Db::name('jobs')->where(['delete_time' => 0, 'dep_id' => $user['dep_id']])->select();
         }
         //省市区下拉框赋值
-        $province = new ProvinceCityModel();
+        $province = new ProvinceCity();
         $provinceList = $province->where(['delete_time'=>0,'level'=>1])->select();
         $cityList = $province->where(['delete_time'=>0,'level'=>2,'parent_id'=>$user['province_id']])->select();
         $districtList = $province->where(['delete_time'=>0,'level'=>3,'parent_id'=>$user['city_id']])->select();
@@ -75,7 +75,7 @@ class Person extends UserBaseController
                 $data['avatar'] = session('user.avatar');
                 session('user', $data);
 
-                $this->success('个人信息修改成功！',url('index/person/index'),'个人信息修改');
+                $this->success('个人信息修改成功！',url('index/PersonController/index'),'个人信息修改');
             }else{
                 $this->error('没有新修改的信息！');
             }
@@ -101,7 +101,7 @@ class Person extends UserBaseController
                 //更新session中的用户头像信息
                 $user['avatar'] = $avatarName;
                 session('user', $user);
-                $this->success('头像修改成功！',url('index/Person/index'),'修改头像');
+                $this->success('头像修改成功！',url('index/PersonController/index'),'修改头像');
             }else{
                 $this->error('头像修改失败！');
             }
