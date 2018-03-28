@@ -15,6 +15,7 @@ class UserBaseController extends Controller
         $navList = Db::name('department')->field(['id','name'])->where('delete_time',0)->select();
         return $navList;
     }
+    
     //重载父类Controller中的success和error方法，将当前操作的信息写进日志表
     public function success($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
     {
