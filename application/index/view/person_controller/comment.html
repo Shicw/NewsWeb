@@ -49,11 +49,25 @@
                             <li><a href="{:url('index/PersonController/comment')}">我的评论</a></li>
                             <li><a href="{:url('index/PersonController/collection')}">我的收藏</a></li>
                         </ul>
-                        <a class="am-btn am-btn-danger" href="{:url('index/LoginController/loginOut')}">注销</a>
+                        <a class="am-btn am-btn-danger" onclick="loginOut()">注销</a>
                     </div>
                 </div>
             </div>
-
+            <script>
+                function loginOut() {
+                    $.ajax({
+                        type: "get",
+                        dataType: "json",
+                        url: "/index/login_controller/loginOut",
+                        success: function (result) {
+                            layer.msg(result.msg,{time:1000});
+                            setTimeout(function () {
+                                window.location.href=result.url;
+                            },1500)
+                        }
+                    });
+                }
+            </script>
         </div>
     </div>
 </header>

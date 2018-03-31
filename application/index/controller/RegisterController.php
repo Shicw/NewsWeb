@@ -56,9 +56,8 @@ class RegisterController extends UserBaseController
             //将注册信息写入数据表并获取新增纪录id
             $userId = $table->insertGetId($userData);
             //根据ID查询出用户信息，并更新前台登录的用户信息
-            $data   = $table->where('id', $userId)->find();
+            $data = $table->where('id', $userId)->find();
             session('user', $data);
-
             if ($userId && $data) {
                 //注册成功后更新用户最后登录时间,online字段置1，跳转到个人中心
                 Db::name('staff')->where('id',$userId)->update(['last_login_time'=>time(),'online'=>1]);

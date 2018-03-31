@@ -42,34 +42,34 @@
     </div>
 </header>
 <div class="am-container">
-    <form action="{:url('LoginController/resetPwdPost')}" class="am-form" data-am-validator method="post">
+    <form class="am-form">
         <div class="am-u-sm-12 am-u-md-5 am-u-md-centered " style="margin-top: 50px">
             <legend>密码重置</legend>
             <div class="am-form-group">
-                <label for="input-username">用户名：</label>
-                <input type="text" name="username" id="input-username" minlength="4" maxlength="8" required/>
+                <label for="username">用户名：</label>
+                <input type="text" id="username"/>
             </div>
             <div class="am-form-group">
-                <label for="input-email">邮箱：</label>
-                <input type="text" id="input-email" minlength="6" required/>
+                <label for="email">邮箱：</label>
+                <input type="text" id="email"/>
             </div>
             <div class="am-form-group">
-                <label for="input-emailCode">邮箱验证码</label>
+                <label for="emailCode">邮箱验证码</label>
                 <div>
-                    <input class="am-fl" type="text" id="input-emailCode" name="emailCode" required  style="width: 70%">
+                    <input class="am-fl" type="text" id="emailCode"  style="width: 70%">
                     <a class="am-btn am-btn-danger" onclick="getCode()" id="getCode" disabled>获取邮箱验证码</a>
                 </div>
             </div>
             <div class="am-form-group">
-                <label for="input-newPassword">新密码：</label>
-                <input type="password" name="newPassword" id="input-newPassword" minlength="6" maxlength="12" required/>
+                <label for="newPassword">新密码：</label>
+                <input type="password" id="newPassword"/>
             </div>
-            <button id="login" class="am-btn am-btn-danger" type="submit">提交</button>
+            <a id="login" class="am-btn am-btn-danger" onclick="resetPwd()">提交</a>
         </div>
     </form>
 </div>
 <script>
-    var email = $("#input-email");
+    var email = $("#email");
     //输入邮箱后，获取验证码按钮变成可点状态
     email.blur(function () {
         if(email.val()){
@@ -87,6 +87,27 @@
             }else {
                 layer.msg("验证码发失败!");
             }
+        },"json");
+    }
+    function resetPwd(){
+        var username = $("#username").val();
+        var email = $("#email").val();
+        var emailCode = $("#emailCode").val();
+        var newPassword = $("#newPassword").val();
+        if (username==='') { layer.msg('用户名不能为空',{time:2000}); return false;}
+        if (email==='') { layer.msg('邮箱不能为空',{time:2000}); return false;}
+        if (emailCode==='')  { layer.msg('邮箱验证码不能为空',{time:2000}); return false;}
+        if (newPassword==='')  { layer.msg('新密码不能为空',{time:2000}); return false;}
+        $.post("/index/login_controller/resetPwdPost",{
+            username:username,
+            email:email,
+            emailCode:emailCode,
+            newPassword:newPassword
+        },function (result) {
+            layer.msg(result.msg,{time:1500});
+            if(result.code===1) setTimeout(function(){
+                window.location.href=result.url;
+            },1500);
         },"json");
     }
 </script>

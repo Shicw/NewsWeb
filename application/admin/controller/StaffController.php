@@ -193,7 +193,6 @@ class StaffController extends AdminBaseController
                 'email' => 'require|email',
                 'birthday' => 'require|integer',
                 'employ_date' => 'require|integer',
-                'username' => 'require|alphaNum|min:4|max:8',
 
             ]);
             $validate->message([
@@ -209,7 +208,6 @@ class StaffController extends AdminBaseController
                 'email' => '邮箱不能为空',
                 'birthday' => '出生日期不能为空',
                 'employ_date' => '入职时间不能为空',
-                'username' => '用户名不能为空',
             ]);
             $data = $this->request->post();
             $data['birthday'] = strtotime($data['birthday']);
@@ -282,13 +280,8 @@ class StaffController extends AdminBaseController
     //接收ajax传值，检查用户名是否重复
     public function checkUsername($username){
         $find = $this->model->where('username',$username)->find();
-        $data = $find ? 1 : 0;
-        return json([
-            "code" => 1,
-            "msg"  => "加载成功",
-            "data" => $data,
-            "url"  => ''
-        ]);
+        $code = $find ? 1 : 0;
+        return json(["code" => $code]);
     }
     //接受ajax传值，查询人员详情
     public function showDetail($id){
@@ -308,7 +301,6 @@ class StaffController extends AdminBaseController
             "code" => 1,
             "msg"  => "加载成功",
             "data" => $data,
-            "url"  => ''
         ]);
     }
 

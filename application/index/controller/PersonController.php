@@ -67,13 +67,13 @@ class PersonController extends UserBaseController
                 $this->error($validate->getError());
             }
             $staff = new Staff();
-            $id = $this->request->param('id');
-            $update = $staff->where('id',$id)->update($data);
+            $update = $staff->where('id',$data['id'])->update($data);
             if ($update){
                 //用户更新个人信息后，接收到的数据中没有avatar，因此先将之前session中的avatar放入data数组
                 //防止直接将data更新进session中丢失头像信息的问题
-                $data['avatar'] = session('user.avatar');
-                session('user', $data);
+                //$data['avatar'] = session('user.avatar');
+                $find = $staff->where('id',$data['id'])->find();
+                session('user', $find);
 
                 $this->success('个人信息修改成功！',url('index/PersonController/index'),'个人信息修改');
             }else{
@@ -121,10 +121,11 @@ class PersonController extends UserBaseController
 
         $staff = new Staff();
         $userData = $staff->field(['username','password'])->where('id',$userId)->find();
+        //各错误类型判断
         if ($username != $userData['username']) $this->error('用户名不正确');
         if ($passwordOld != $userData['password']) $this->error('旧密码不正确');
         if ($passwordNewAgain !== $passwordNew) $this->error('两次输入的密码不一致');
-
+        if ($passwordOld == $passwordNew) $this->error('新密码不能与旧密码相同');
         $updatePwd = $staff->where('id',$userId)->update(['password'=>$passwordNew]);
         if ($updatePwd){
             $this->success('密码修改成功！',url('index/index/index'),'密码修改');

@@ -31,19 +31,19 @@ class UserBaseController extends Controller
         }
         parent::success($msg, $url, $data, $wait, $header);
     }
-    public function error($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
-    {
-        if(session('user.id')) {
-            $logsData = [
-                'msg' => $msg,
-                'data' => $data,
-                'staff_id' => session('user.id'),
-                'create_time' => time()
-            ];
-            Db::name('logs')->insert($logsData);
-        }
-        parent::error($msg, $url, $data, $wait, $header);
-    }
+    //public function error($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
+    //{
+    //    if(session('user.id')) {
+    //        $logsData = [
+    //            'msg' => $msg,
+    //            'data' => $data,
+    //            'staff_id' => session('user.id'),
+    //            'create_time' => time()
+    //        ];
+    //        Db::name('logs')->insert($logsData);
+    //    }
+    //    parent::error($msg, $url, $data, $wait, $header);
+    //}
 
     //注销success方法
     public function successLoginout($msg = '', $url = null, $data = '', $wait = 1, array $header = [])

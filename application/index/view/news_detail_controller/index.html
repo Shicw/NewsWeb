@@ -109,39 +109,36 @@
     //发表评论 ajax
     $("#submit").click(function () {
         var comment = $("#text");
-        if (comment.val()=='') {
+        if (comment.val()==='') {
             layer.msg('评论不能为空',{time:2000});
             comment.focus();
         }else{
             var newsId = $("#newsId").val();
             var title = $("#title").val();
-            $.post("/index/news_detail_controller/comment",{newsId:newsId,title:title,comment:comment.val()},function (result) {
-                var msg = result.code ? "评论成功" : "评论失败";
-                layer.msg(msg,{time:1000});
+            $.post("/index/news_detail_controller/comment",{
+                newsId:newsId,
+                title:title,
+                comment:comment.val()
+            },function (result) {
+                layer.msg(result.msg,{time:1500});
                 //评论成功刷新页面
-                if(result.code===1) window.location.reload();
+                if(result.code===1) setTimeout(function(){
+                    window.location.reload();
+                },1500);
             },"json");
         }
     });
     //收藏 ajax
     function collect(id) {
         $.post("/index/news_detail_controller/collect",{id:id},function (result) {
-            var msg = ""; var collect = $("#collect");
-            switch (result.code){
-                case 0: msg = "未登录不能收藏";
-                    break;
-                case 1: msg = "收藏成功";
-                    collect.removeClass('fa-heart-o').addClass('fa-heart');
-                    break;
-                case 2: msg = "收藏失败";
-                    break;
-                case 3: msg = "取消收藏";
-                    collect.removeClass('fa-heart').addClass('fa-heart-o');
-                    break;
-                case 4: msg = "取消收藏失败";
-                    break;
+            var collect = $("#collect");
+             if(result.msg === "添加收藏成功！") {
+                 collect.removeClass('fa-heart-o').addClass('fa-heart');
+             }
+            if(result.msg === "取消收藏成功！") {
+                collect.removeClass('fa-heart').addClass('fa-heart-o');
             }
-            layer.msg(msg,{time:1000});
+            layer.msg(result.msg,{time:1000});
         },"json");
     }
     //点击头像显示用户信息 ajax

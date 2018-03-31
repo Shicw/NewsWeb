@@ -1,6 +1,9 @@
 {include file="public/head" /}
 <title>用户注册</title>
-<style>.register{width: 100%;margin-top: 20px}</style>
+<style>
+	.register{width: 100%;margin-top: 20px}
+	.unClick{pointer-events:none}
+</style>
 </head>
 <body>
 	<header class="am-topbar am-topbar-fixed-top wos-header">
@@ -42,31 +45,31 @@
     </div>
 </header>
 	<div class="am-container">
-		<form action="{:url('RegisterController/doRegister')}" class="am-form" data-am-validator method="post">
+		<form action="{:url('RegisterController/doRegister')}" class="am-form">
 			<div class="am-u-sm-12 am-u-md-5 am-u-md-centered " style="margin-top: 50px">
 				<legend>新用户注册</legend>
 				<div class="am-form-group">
-					<label for="input-username">用户名：</label>
-					<input type="text" name="username" id="input-username" minlength="4" maxlength="8" placeholder="只能包含数字、字母；4-8位" class="js-pattern-username" required/>
+					<label for="username">用户名：</label>
+					<label hidden id="error" style="color: red">用户名已存在!</label>
+					<input type="text" id="username" placeholder="只能包含数字、字母；4-8位" onblur="checkUsername(this);"/>
 				</div>
 				<div class="am-form-group">
-					<label for="input-password">密码：</label>
-					<input type="password" name="password" id="input-password" minlength="6" maxlength="12" placeholder="只能包含数字、字母、_、-；6-12位" class="js-pattern-password" required/>
+					<label for="password">密码：</label>
+					<input type="password" id="password" placeholder="只能包含数字、字母、_、-；6-12位"/>
 				</div>
 				<div class="am-form-group">
-					<label for="input-mobile">手机：</label>
-					<input type="tel" name="mobile" id="input-mobile" minlength="11" maxlength="11" class="js-pattern-mobile" required />
+					<label for="mobile">手机：</label>
+					<input type="tel" id="mobile"/>
 				</div>
-			
 				<div class="am-form-group">
-					<label for="input-captcha">验证码</label>
+					<label for="captcha">验证码</label>
 					<div>
-						<input class="am-fl" type="text" id="input-captcha" name="captcha" required  style="width: 60%">
-						<div class="captcha"><img src="{:captcha_src()}" onclick="this.src='http://www.news.cn{:captcha_src()}?'+Math.random()" alt="captcha" /></div>
+						<input class="am-fl" type="text" id="captcha" style="width: 60%">
+						<div class="captcha"><img src="{:captcha_src()}" onclick="this.src='{:captcha_src()}'" alt="captcha" /></div>
 					</div>
 				</div>
 				{eq name="$openRegister" value="1"}
-				<button class="am-btn am-btn-danger register" type="submit">注册</button>
+				<a class="am-btn am-btn-danger register" onclick="register()" id="reg">注册</a>
 				{else/}
 				<button class="am-btn am-btn-danger register" type="submit" disabled>注册功能已关闭，请联系管理员</button>
 				{/eq}
@@ -75,10 +78,41 @@
 	</div>
 </body>
 <script>
-	if ($.AMUI && $.AMUI.validator) {
-		$.AMUI.validator.patterns.username = /^[A-Za-z0-9]+$/;
-		$.AMUI.validator.patterns.password = /^[A-Za-z0-9\_\-]+$/;
-		$.AMUI.validator.patterns.mobile = /^[0-9]+$/;
-	}
+	//检查用户名是否存在ajax
+	function checkUsername(self) {
+        var username= self.value;
+        var regBtn = $("#reg");
+        $.post("/admin/staff_controller/checkUsername",{username:username},function(result){
+            if (result.code==1){
+                $("#error").removeAttr("hidden");
+                regBtn.addClass('unClick');
+            }else{
+                $("#error").attr("hidden","true");
+                regBtn.removeClass('unClick')
+            }
+        },"json");
+    }
+	//注册提交ajax
+	function register() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var mobile = $("#mobile").val();
+        var captcha = $("#captcha").val();
+        if (username==='') { layer.msg('用户名不能为空',{time:2000}); return false;}
+        if (password==='') { layer.msg('密码不能为空',{time:2000}); return false;}
+        if (mobile==='') { layer.msg('手机号不能为空',{time:2000}); return false;}
+        if (captcha==='')  { layer.msg('验证码不能为空',{time:2000}); return false;}
+        $.post("/index/register_controller/doRegister",{
+            username:username,
+            password:password,
+			mobile:mobile,
+            captcha:captcha
+        },function (result) {
+            layer.msg(result.msg,{time:1000});
+            if(result.code===1) setTimeout(function(){
+                window.location.href=result.url;
+            },1500);
+        },"json");
+    }
 </script>
 </html>

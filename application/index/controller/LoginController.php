@@ -27,18 +27,17 @@ class LoginController extends UserBaseController
 
 
         if (!cmf_captcha_check($captcha)){
-            $this->error('验证码错误！',url('index/LoginController/index'),'用户登录');
+            $this->error('验证码错误！');
         }
         $result = Db::name('staff')->where(['username'=>$username,'delete_time'=>0])->find();
         if ($result){
-            if ($result['status']==0) $this->error('该帐号被限制登录！',url('index/LoginController/index'),'用户登录');
+            if ($result['status']==0) $this->error('该帐号被限制登录！');
             if ($result['username']==$username&&$result['password']==$password) {
-                //将登录用户信息写进session
-                session('user', $result);
                 //更新用户最后登录时间,online字段置1
                 Db::name('staff')->where('id',$result['id'])->update(['last_login_time'=>time(),'online'=>1]);
-
-                $this->success('登录成功！', url('index/index'),'用户登录');
+                //将登录用户信息写进session
+                session('user', $result);
+                $this->success('登录成功！', url('index/Index/index'),'用户登录');
             }else{
                 $this->error('用户名密码错误！');
             }
@@ -48,9 +47,7 @@ class LoginController extends UserBaseController
     }
     //用户注销
     public function loginOut(){
-
         $this->successLoginout('注销成功！',url('index/index/index'),'用户注销');
-
     }
 
     //忘记密码 重置界面
@@ -94,7 +91,7 @@ class LoginController extends UserBaseController
         $userId = $user['id'];
         //将userid写入session，使其可以在未登录的情况下记录充值密码操作日志
         session('resetUserId',$userId);
-        //将操作记录写入数据库
+        //将验证码生成记录写入数据库
         $data = [
             'code'=>$code,
             'email'=>$userEmail,

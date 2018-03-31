@@ -1,5 +1,6 @@
 {include file="public/head" /}
 <title>人员管理</title>
+<style>.unClick{pointer-events:none}</style>
 </head>
 
 <body>
@@ -107,14 +108,14 @@
                                     <div class="form-group">
                                         <label for="input-username"><span class="form-required">*</span>登录名</label>
                                         <label hidden id="error" style="color: red">登录名已存在!</label>
-                                        <input type="text" id="input-username" class="form-control" placeholder="只能包含数字、字母；4-8位" name="username" onblur="checkUsername(this);">
+                                        <input type="text" id="input-username" class="form-control" placeholder="只能包含数字、字母；4-8位" name="username" onblur="checkUsername(this)">
                                     </div>
                                     <div class="form-group">
                                         <label for="input-password"><span class="form-required">*</span>密码</label>
                                         <input type="password" id="input-password" class="form-control" placeholder="只能包含数字、字母、_、-；6-12位" name="password">
                                     </div>
                                     <div class="form-group pull-right">
-                                        <button type="submit" class="btn btn-primary">添加</button>
+                                        <button type="submit" class="btn btn-primary" id="add">添加</button>
                                         <a class="btn btn-default" href="{:url('admin/StaffController/index')}">返回</a>
                                     </div>
                                 </div>
@@ -151,12 +152,15 @@
     //ajax检验登录名是否重复
     function checkUsername(self) {
             var username= self.value;
-            $.post("/admin/staff_controller/checkUsername",{username:username},function(data){
+            var addBtn = $("#add");
+            $.post("/admin/staff_controller/checkUsername",{username:username},function(result){
                 debugger;
-                if (data.data==1){
+                if (result.code==1){
                     $("#error").removeAttr("hidden");
+                    addBtn.addClass('unClick');
                 }else{
                     $("#error").attr("hidden","true");
+                    addBtn.removeClass('unClick')
                 }
             },"json");
     }

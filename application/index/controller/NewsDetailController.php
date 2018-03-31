@@ -74,50 +74,41 @@ class NewsDetailController extends UserBaseController
             //将news表中新闻comment_num字段加1
             $result2 = Db::name('news')->where(['id'=>$data['newsId'],'delete_time'=>0])->setInc('comment_num',1);
             if ($result1 && $result2){
-                //写入日志表
-                Db::name('logs')->insert(['msg'=>'评论成功！','data'=>'新闻评论：'.$data['title'],'staff_id'=>$userId,'create_time'=>$time]);
-                return json(['code'=>1]);
+                $this->success('评论成功！','','新闻评论：'.$data['title']);
             }else{
-                return json(['code'=>0]);
+                $this->error('评论失败！');
             }
         }else {
-            return json(['code'=>0]);
+            $this->error('评论失败！');
         }
     }
-    //收藏 0：未登录 1：收藏成功 2：收藏失败 3：取消收藏 4：取消失败
+    //添加收藏/取消收藏
     public function collect($id){
         $userId = session('user.id');
         $code = null;
         //如果用户未登录，返回0
         if (!isset($userId)){
-            return json(['code' => 0]);
+            $this->error('未登录不能收藏！');
         }else{
             $news = Db::name('news')->where(['delete_time'=>0,'id'=>$id])->find();
             //查询当前用户是否收藏过改新闻，是则取消收藏，否则添加收藏
             $table = Db::name('collection');
             $find = $table->where(['staff_id'=>$userId,'news_id'=>$id,'delete_time'=>0])->find();
-            if($find){//取消收藏
+            if($find){ //取消收藏
                 $result = $table->where(['staff_id'=>$userId,'news_id'=>$id,'delete_time'=>0])->setField('delete_time',time());
-                $code = $result ? 3 : 4;
-                //操作成功写入日志，此处是返回给ajax，不方便调用success方法来写日志
-                if($code == 3) Db::name('logs')->insert([
-                    'msg'=>'取消收藏成功！',
-                    'data'=>'取消收藏：'.$news['title'],
-                    'staff_id'=>$userId,
-                    'create_time' => time()
-                ]);
-            }else{//添加收藏
+                if($result){
+                    $this->success('取消收藏成功！','','取消收藏：'.$news['title']);
+                }else{
+                    $this->error('取消收藏失败！');
+                }
+            }else{ //添加收藏
                 $result = $table->insert(['staff_id'=>$userId,'news_id'=>$id,'create_time'=>time()]);
-                $code = $result ? 1 : 2;
-                if($code == 1) Db::name('logs')->insert([
-                    'msg'=>'添加收藏成功！',
-                    'data'=>'添加收藏：'.$news['title'],
-                    'staff_id'=>$userId,
-                    'create_time' => time()
-                ]);
-
+                if($result){
+                    $this->success('添加收藏成功！','','添加收藏：'.$news['title']);
+                }else{
+                    $this->error('添加收藏失败！');
+                }
             }
-            return json(['code' => $code]);
         }
     }
     //点击头像查看用户信息 ajax

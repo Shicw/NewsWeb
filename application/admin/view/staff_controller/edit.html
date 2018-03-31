@@ -121,9 +121,7 @@
 
                                     <div class="form-group">
                                         <label for="input-username"><span class="form-required">*</span>登录名</label>
-                                        <label hidden id="error" style="color: red">登录名已存在!</label>
-                                        <input type="text" id="input-username" class="form-control" onchange="checkUsername(this);"
-                                               placeholder="只能包含数字、字母；4-8位" name="username" value="{$data['username']}">
+                                        <input type="text" readonly id="input-username" class="form-control" value="{$data['username']}">
                                     </div>
 
                                     <div class="form-group pull-right" style="margin-top: 30px;">

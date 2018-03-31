@@ -13,9 +13,9 @@ function provinceChange(self) {
 //当更改省份时,ajax显示城市,同时清除区县
 function reloadCity(data) {
     //删除除第一条option以外的所有option(第一条option为"请选择")
-    $("#input-city option:not(:first)").remove();
+    $("#city option:not(:first)").remove();
 
-    $("#input-district option:not(:first)").remove();
+    $("#district option:not(:first)").remove();
 
     updateOptions(data, 'city');
 }
@@ -32,7 +32,7 @@ function cityChange(self) {
 
 function reloadDistrict(data) {
     //删除除第一条option以外的所有option(第一条option为"请选择")
-    $("#input-district option:not(:first)").remove();
+    $("#district option:not(:first)").remove();
 
     updateOptions(data, 'district');
 }
@@ -40,7 +40,7 @@ function reloadDistrict(data) {
 //更新option
 function updateOptions(data, name) {
     var data = data['data'];
-    var select = $("#input-" + name);
+    var select = $("#" + name);
     for (var i = 0; i < data.length; i++) {
         select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
     }

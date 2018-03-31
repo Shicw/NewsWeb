@@ -49,11 +49,25 @@
                             <li><a href="{:url('index/PersonController/comment')}">我的评论</a></li>
                             <li><a href="{:url('index/PersonController/collection')}">我的收藏</a></li>
                         </ul>
-                        <a class="am-btn am-btn-danger" href="{:url('index/LoginController/loginOut')}">注销</a>
+                        <a class="am-btn am-btn-danger" onclick="loginOut()">注销</a>
                     </div>
                 </div>
             </div>
-
+            <script>
+                function loginOut() {
+                    $.ajax({
+                        type: "get",
+                        dataType: "json",
+                        url: "/index/login_controller/loginOut",
+                        success: function (result) {
+                            layer.msg(result.msg,{time:1000});
+                            setTimeout(function () {
+                                window.location.href=result.url;
+                            },1500)
+                        }
+                    });
+                }
+            </script>
         </div>
     </div>
 </header>
@@ -63,7 +77,7 @@
     <div class="am-u-sm-12 am-u-md-8 am-u-lg-8">
         <div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
             <ul class="am-tabs-nav am-nav am-nav-tabs">
-                <li class="am-active"><a href="javascript: void(0)">我的评论</a></li>
+                <li class="am-active"><a href="javascript: void(0)">我的收藏</a></li>
             </ul>
             <div class="am-tabs-bd">
                 <div class="am-tab-panel am-active">
