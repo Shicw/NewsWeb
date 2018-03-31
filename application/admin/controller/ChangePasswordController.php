@@ -32,7 +32,7 @@ class ChangePasswordController extends AdminBaseController
 
         $updatePwd = $staff->where('id',$adminId)->update(['password'=>$passwordNew]);
         if ($updatePwd){
-            $this->success('密码修改成功！',url('admin/index/clock'),'密码修改');
+            $this->success('密码修改成功！',url('admin/index/main'),'密码修改');
         }else{
             $this->error('密码修改失败，请重试！');
         }

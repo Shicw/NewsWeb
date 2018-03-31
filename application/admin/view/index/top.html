@@ -4,6 +4,8 @@
 <title>头部</title>
 <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/reset.css"/>
 <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/common.css"/>
+<script type="text/javascript" src="__STATIC__/admin/js/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="__STATIC__/admin/layer/layer.js"></script>
 </head>
 
 <body>
@@ -12,8 +14,23 @@
     	<a>后台管理中心</a>
     </div>
     <div class="admin">
-    	<p>欢迎您，{$name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:url('admin/Index/loginout')}" target="_top">注销</a></p>
+    	<p>欢迎您，{$name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:" onclick="loginOut()">注销</a></p>
     </div>
 </div>
+<script>
+    function loginOut() {
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/admin/index/loginOut",
+            success: function (result) {
+                layer.msg(result.msg,{time:1000});
+                setTimeout(function () {
+                    top.location.href=result.url;
+                },1000)
+            }
+        });
+    }
+</script>
 </body>
 </html>

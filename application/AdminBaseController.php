@@ -25,20 +25,20 @@ class AdminBaseController extends Controller
         }
         parent::success($msg, $url, $data, $wait, $header);
     }
-    public function error($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
-    {
-        //检测到用户登录，才执行日志记录
-        if(session('admin.id')) {
-            $logsData = [
-                'msg' => $msg,
-                'data' => $data,
-                'staff_id' => session('admin.id'),
-                'create_time' => time()
-            ];
-            if ($msg != '' && $data != '') Db::name('logs')->insert($logsData);
-        }
-        parent::error($msg, $url, $data, $wait, $header);
-    }
+    //public function error($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
+    //{
+    //    //检测到用户登录，才执行日志记录
+    //    if(session('admin.id')) {
+    //        $logsData = [
+    //            'msg' => $msg,
+    //            'data' => $data,
+    //            'staff_id' => session('admin.id'),
+    //            'create_time' => time()
+    //        ];
+    //        if ($msg != '' && $data != '') Db::name('logs')->insert($logsData);
+    //    }
+    //    parent::error($msg, $url, $data, $wait, $header);
+    //}
 
     //注销success方法
     public function successLoginout($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
