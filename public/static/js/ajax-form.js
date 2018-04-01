@@ -2,7 +2,7 @@ $(".ajax-submit").click(function() {
     var form = $("#form");
     //获取表单数据
     var formData = form.serializeArray();
-    console.log(formData);
+    //console.log(formData);
     //验证表单数据是否全部填写
     for(var i=0;i<formData.length;i++){
         var value = formData[i].value;
