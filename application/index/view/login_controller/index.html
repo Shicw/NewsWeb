@@ -42,49 +42,32 @@
     </div>
 </header>
 	<div class="am-container">
-		<form class="am-form">
+		<form class="am-form" action="{:url('index/loginController/doLogin')}" id="form" method="post">
 			<div class="am-u-sm-12 am-u-md-5 am-u-md-centered " style="margin-top: 50px">
 				<legend>用户登录</legend>
 				<div class="am-form-group">
-					<label for="username">用户名：</label>
-					<input type="text" id="username"/>
+					<label for="username">用户名</label>
+					<input type="text" name="username" id="username"/>
 				</div>
 				<div class="am-form-group">
-					<label for="password">密码：</label>
-					<input type="password" id="password"/>
+					<label for="password">密码</label>
+					<input type="password" name="password" id="password"/>
 				</div>
 				<div class="am-form-group">
 					<label for="captcha">验证码</label>
 					<div>
-					<input class="am-fl" type="text" id="captcha" style="width: 60%">
+						<label hidden>验证码</label>
+					<input class="am-fl" type="text" name="captcha" id="captcha" style="width: 60%">
 					<div class="captcha">
-						<img src="{:captcha_src()}" onclick="this.src='{:captcha_src()}'" alt="captcha" /></div>
+						<img src="{:captcha_src()}" onclick="this.src='{:captcha_src()}'" alt="captcha" />
+					</div>
 					</div>
 				</div>
-				<a id="login" class="am-btn am-btn-danger" onclick="login()">登录</a>
+				<a id="login" class="am-btn am-btn-danger ajax-submit">登录</a>
 				<a href="{:url('LoginController/resetPwd')}">忘记密码</a>
 			</div>
 		</form>
 	</div>
 </body>
-<script>
-	function login() {
-	    var username = $("#username").val();
-        var password = $("#password").val();
-        var captcha = $("#captcha").val();
-        if (username==='') { layer.msg('用户名不能为空',{time:2000}); return false;}
-        if (password==='') { layer.msg('密码不能为空',{time:2000}); return false;}
-        if (captcha==='')  { layer.msg('验证码不能为空',{time:2000}); return false;}
-		$.post("/index/login_controller/doLogin",{
-		    username:username,
-			password:password,
-			captcha:captcha
-		},function (result) {
-		    layer.msg(result.msg,{time:1000});
-		    if(result.code===1) setTimeout(function(){
-                window.location.href=result.url;
-            },1500);
-        },"json");
-    }
-</script>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </html>

@@ -45,31 +45,32 @@
     </div>
 </header>
 	<div class="am-container">
-		<form action="{:url('RegisterController/doRegister')}" class="am-form">
+		<form action="{:url('RegisterController/doRegister')}" class="am-form" id="form" method="post">
 			<div class="am-u-sm-12 am-u-md-5 am-u-md-centered " style="margin-top: 50px">
 				<legend>新用户注册</legend>
 				<div class="am-form-group">
-					<label for="username">用户名：</label>
-					<label hidden id="error" style="color: red">用户名已存在!</label>
-					<input type="text" id="username" placeholder="只能包含数字、字母；4-8位" onblur="checkUsername(this);"/>
+					<label hidden id="error" style="color: red;position: absolute;left: 70px;">用户名已存在!</label>
+					<label for="username">用户名</label>
+					<input type="text" name="username" id="username" placeholder="只能包含数字、字母；4-8位" onblur="checkUsername(this);"/>
 				</div>
 				<div class="am-form-group">
-					<label for="password">密码：</label>
-					<input type="password" id="password" placeholder="只能包含数字、字母、_、-；6-12位"/>
+					<label for="password">密码</label>
+					<input type="password" name="password" id="password" placeholder="只能包含数字、字母、_、-；6-12位"/>
 				</div>
 				<div class="am-form-group">
-					<label for="mobile">手机：</label>
-					<input type="tel" id="mobile"/>
+					<label for="mobile">手机</label>
+					<input type="tel" name="mobile" id="mobile"/>
 				</div>
 				<div class="am-form-group">
 					<label for="captcha">验证码</label>
 					<div>
-						<input class="am-fl" type="text" id="captcha" style="width: 60%">
+						<label hidden>验证码</label>
+						<input class="am-fl" type="text" name="captcha" id="captcha" style="width: 60%">
 						<div class="captcha"><img src="{:captcha_src()}" onclick="this.src='{:captcha_src()}'" alt="captcha" /></div>
 					</div>
 				</div>
 				{eq name="$openRegister" value="1"}
-				<a class="am-btn am-btn-danger register" onclick="register()" id="reg">注册</a>
+				<a class="am-btn am-btn-danger register ajax-submit" id="btn">注册</a>
 				{else/}
 				<button class="am-btn am-btn-danger register" type="submit" disabled>注册功能已关闭，请联系管理员</button>
 				{/eq}
@@ -77,42 +78,6 @@
 		</form>
 	</div>
 </body>
-<script>
-	//检查用户名是否存在ajax
-	function checkUsername(self) {
-        var username= self.value;
-        var regBtn = $("#reg");
-        $.post("/admin/staff_controller/checkUsername",{username:username},function(result){
-            if (result.code==1){
-                $("#error").removeAttr("hidden");
-                regBtn.addClass('unClick');
-            }else{
-                $("#error").attr("hidden","true");
-                regBtn.removeClass('unClick')
-            }
-        },"json");
-    }
-	//注册提交ajax
-	function register() {
-        var username = $("#username").val();
-        var password = $("#password").val();
-        var mobile = $("#mobile").val();
-        var captcha = $("#captcha").val();
-        if (username==='') { layer.msg('用户名不能为空',{time:2000}); return false;}
-        if (password==='') { layer.msg('密码不能为空',{time:2000}); return false;}
-        if (mobile==='') { layer.msg('手机号不能为空',{time:2000}); return false;}
-        if (captcha==='')  { layer.msg('验证码不能为空',{time:2000}); return false;}
-        $.post("/index/register_controller/doRegister",{
-            username:username,
-            password:password,
-			mobile:mobile,
-            captcha:captcha
-        },function (result) {
-            layer.msg(result.msg,{time:1000});
-            if(result.code===1) setTimeout(function(){
-                window.location.href=result.url;
-            },1500);
-        },"json");
-    }
-</script>
+<script src="__STATIC__/js/ajax-form.js"></script>
+<script src="__STATIC__/js/check-username.js"></script>
 </html>

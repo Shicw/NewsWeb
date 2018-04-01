@@ -20,33 +20,32 @@
             <div class="xjhy" style="padding:10px 0;height: 670px">
                 <div class="tabBox_t">
                     <div class="tabBox">
-
-                        <form action="{:url('admin/ConfigController/mailerPost')}" method="post">
+                        <form action="{:url('admin/ConfigController/mailerPost')}" id="form" method="post">
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label for="input-fromname"><span>*</span>发件人：</label>
-                                    <input type="text" id="input-fromname" name="fromname" class="form-control" value="{$mailer[1]['value']}">
+                                    <label for="fromname"><span>*</span>发件人：</label>
+                                    <input type="text" id="fromname" name="fromname" class="form-control" value="{$mailer[1]['value']}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-username"><span>*</span>发件邮箱帐号：</label>
-                                    <input type="text" id="input-username" name="username" class="form-control" value="{$mailer[6]['value']}">
+                                    <label for="username"><span>*</span>发件邮箱帐号：</label>
+                                    <input type="text" id="username" name="username" class="form-control" value="{$mailer[6]['value']}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-password"><span>*</span>发件邮箱密码：</label>
-                                    <input type="password" id="input-password" name="password" class="form-control" value="{$mailer[7]['value']}">
+                                    <label for="password"><span>*</span>发件邮箱密码：</label>
+                                    <input type="password" id="password" name="password" class="form-control" value="{$mailer[7]['value']}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-host"><span>*</span>SMTP服务器：</label>
-                                    <input type="text" id="input-host" name="host" class="form-control" value="{$mailer[2]['value']}">
+                                    <label for="host"><span>*</span>SMTP服务器：</label>
+                                    <input type="text" id="host" name="host" class="form-control" value="{$mailer[2]['value']}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-port"><span>*</span>SMTP服务器端口：</label>
-                                    <input type="text" id="input-port" name="port" class="form-control" value="{$mailer[3]['value']}">
+                                    <label for="port"><span>*</span>SMTP服务器端口：</label>
+                                    <input type="text" id="port" name="port" class="form-control" value="{$mailer[3]['value']}">
                                 </div>
                                 <div class="form-group">
                                     {php}$secureArray = array("1"=>"ssl","2"=>"tls");{/php}
-                                    <label for="input-secure"><span>*</span>连接方式：</label>
-                                    <select name="secure" id="input-secure" class="form-control">
+                                    <label for="secure"><span>*</span>连接方式：</label>
+                                    <select name="secure" id="secure" class="form-control">
                                         {foreach name="$secureArray" item="vo"}
                                           {php}$selected=$mailer[4]['value']==$vo?"selected":"";{/php}
                                           <option value="{$vo}" {$selected}>{$vo}</option>
@@ -54,14 +53,14 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-subject"><span>*</span>邮件标题：</label>
-                                    <input type="text" id="input-subject" name="subject" class="form-control" value="{$mailer[5]['value']}">
+                                    <label for="subject"><span>*</span>邮件标题：</label>
+                                    <input type="text" id="subject" name="subject" class="form-control" value="{$mailer[5]['value']}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-body"><span>*</span>邮件内容：</label>
-                                    <input type="text" id="input-body" name="body" class="form-control" value="{$mailer[0]['value']}">
+                                    <label for="body"><span>*</span>邮件内容：</label>
+                                    <input type="text" id="body" name="body" class="form-control" value="{$mailer[0]['value']}">
                                 </div>
-                                <button class="btn btn-primary" type="submit">保存</button>
+                                <a class="btn btn-primary ajax-submit">保存</a>
                             </div>
                         </form>
                     </div>
@@ -70,5 +69,6 @@
         </div>
     </div>
 </div>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </body>
 </html>

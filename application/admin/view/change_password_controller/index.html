@@ -22,23 +22,25 @@
                 <div class="tabBox_t">
                     <div class="tabBox">
                         <div class="col-md-5">
+                            <form action="{:url('admin/changePasswordController/changePost')}" id="form" method="post">
                             <div class="form-group">
-                                <label for="username">用户名：</label>
-                                <input type="text" id="username" class="form-control">
+                                <label for="username">用户名</label>
+                                <input type="text" name="username" id="username" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="passwordOld">旧密码：</label>
-                                <input type="password" id="passwordOld" class="form-control">
+                                <label for="passwordOld">旧密码</label>
+                                <input type="password" name="passwordOld" id="passwordOld" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="passwordNew">新密码：</label>
-                                <input type="password" id="passwordNew" class="form-control">
+                                <label for="passwordNew">新密码</label>
+                                <input type="password" name="passwordNew" id="passwordNew" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="passwordNewAgain">新密码确认：</label>
-                                <input type="password" id="passwordNewAgain" class="form-control">
+                                <label for="passwordNewAgain">新密码确认</label>
+                                <input type="password" name="passwordNewAgain" id="passwordNewAgain" class="form-control">
                             </div>
-                            <button class="btn btn-primary" type="submit" onclick="pwdEdit()">保存</button>
+                            <a class="btn btn-primary ajax-submit">保存</a>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -46,29 +48,6 @@
         </div>
     </div>
 </div>
-<script>
-    //修改密码ajax
-    function pwdEdit() {
-        var username = $("#username").val();
-        var passwordOld = $("#passwordOld").val();
-        var passwordNew = $("#passwordNew").val();
-        var passwordNewAgain = $("#passwordNewAgain").val();
-        if (username==='') { layer.msg('用户名不能为空',{time:2000}); return false;}
-        if (passwordOld==='') { layer.msg('旧密码不能为空',{time:2000}); return false;}
-        if (passwordNew==='') { layer.msg('新密码不能为空',{time:2000}); return false;}
-        if (passwordNewAgain==='')  { layer.msg('请再次输入新密码',{time:2000}); return false;}
-        $.post("/admin/change_password_controller/changePost",{
-            username:username,
-            passwordOld:passwordOld,
-            passwordNew:passwordNew,
-            passwordNewAgain:passwordNewAgain
-        },function (result) {
-            layer.msg(result.msg,{time:1000});
-            if(result.code===1) setTimeout(function(){
-                window.location.href=result.url;
-            },1500);
-        },"json");
-    }
-</script>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </body>
 </html>

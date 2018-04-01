@@ -42,29 +42,30 @@
     </div>
 </header>
 <div class="am-container">
-    <form class="am-form">
+    <form class="am-form" action="{:url('index/loginController/resetPwdPost')}" method="post" id="form">
         <div class="am-u-sm-12 am-u-md-5 am-u-md-centered " style="margin-top: 50px">
             <legend>密码重置</legend>
             <div class="am-form-group">
-                <label for="username">用户名：</label>
-                <input type="text" id="username"/>
+                <label for="username">用户名</label>
+                <input type="text" name="username" id="username"/>
             </div>
             <div class="am-form-group">
-                <label for="email">邮箱：</label>
-                <input type="text" id="email"/>
+                <label for="email">邮箱</label>
+                <input type="text" name="email" id="email"/>
             </div>
             <div class="am-form-group">
                 <label for="emailCode">邮箱验证码</label>
                 <div>
-                    <input class="am-fl" type="text" id="emailCode"  style="width: 70%">
-                    <a class="am-btn am-btn-danger" onclick="getCode()" id="getCode" disabled>获取邮箱验证码</a>
+                    <label hidden>邮箱验证码</label>
+                    <input class="am-fl" type="text" name="emailCode" id="emailCode"  style="width: 70%">
+                    <a class="am-btn am-btn-danger" onclick="getCode()" name="" id="getCode" disabled>获取邮箱验证码</a>
                 </div>
             </div>
             <div class="am-form-group">
-                <label for="newPassword">新密码：</label>
-                <input type="password" id="newPassword"/>
+                <label for="newPassword">新密码</label>
+                <input type="password" name="" id="newPassword"/>
             </div>
-            <a id="login" class="am-btn am-btn-danger" onclick="resetPwd()">提交</a>
+            <a id="login" class="am-btn am-btn-danger ajax-submit">提交</a>
         </div>
     </form>
 </div>
@@ -80,36 +81,16 @@
     function getCode () {
         var load = layer.load(0, {shade: false});
         $.post("/index/login_controller/sendCode",{userEmail:email.val()},function (result) {
+            layer.close(load);
             if (result.status==1){
                 $("#getCode").attr('disabled',true);
-                layer.close(load);
                 layer.msg("验证码发送成功!");
             }else {
                 layer.msg("验证码发失败!");
             }
         },"json");
     }
-    function resetPwd(){
-        var username = $("#username").val();
-        var email = $("#email").val();
-        var emailCode = $("#emailCode").val();
-        var newPassword = $("#newPassword").val();
-        if (username==='') { layer.msg('用户名不能为空',{time:2000}); return false;}
-        if (email==='') { layer.msg('邮箱不能为空',{time:2000}); return false;}
-        if (emailCode==='')  { layer.msg('邮箱验证码不能为空',{time:2000}); return false;}
-        if (newPassword==='')  { layer.msg('新密码不能为空',{time:2000}); return false;}
-        $.post("/index/login_controller/resetPwdPost",{
-            username:username,
-            email:email,
-            emailCode:emailCode,
-            newPassword:newPassword
-        },function (result) {
-            layer.msg(result.msg,{time:1500});
-            if(result.code===1) setTimeout(function(){
-                window.location.href=result.url;
-            },1500);
-        },"json");
-    }
 </script>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </body>
 </html>

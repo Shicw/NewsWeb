@@ -25,8 +25,8 @@
                                 <label>开启/关闭注册功能：</label>
                                 <div class="form-control">
                                     {php}
-                                       $checked1=$openRegister?"checked":"";
-                                       $checked2=$openRegister?"":"checked";
+                                       $checked1 = $openRegister ? "checked" : "";
+                                       $checked2 = $openRegister ? "" : "checked";
                                     {/php}
                                     <input type="radio" value="1" name="openRegister" {$checked1}>开启
                                     <input type="radio" value="0" name="openRegister" {$checked2}>关闭

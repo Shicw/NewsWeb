@@ -1,39 +1,26 @@
 {include file="public/head" /}
 <title>登录</title>
 <style>
-    .login_m h2{ font-size: 30px;padding-top: 40px;}
-    #login{width: 100%; height: 52px;}
+    #login{width: 100%; height: 42px;margin-left: -3px;font-size: 15px}
+    body{background: url("__STATIC__/admin/images/login_bg.jpg") 0 0 no-repeat; padding-top: 70px}
 </style>
 </head>
-
 <body>
-<div class="login">
-	<div class="bg_img"><img src="__STATIC__/admin/images/login_bg.jpg"/></div>
-	
-    <div class="login_m">
-        <h2>后台登录</h2>
-    	<ul>
-        	<li class="wz">用户名</li>
-            <li><input id="username" type="text"></li>
-            <li class="wz">密码</li>
-            <li><input id="password" type="password"></li>
-            <li><button class="btn btn-primary" id="login" onclick="login()">登录</button></li>
-        </ul>
+    <h2>后台登录</h2>
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <form action="{:url('admin/Index/doLogin')}" id="form" method="post">
+          <div class="form-group">
+            <label for="username" class="pull-left">用户名</label>
+            <input id="username" name="username" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="password" class="pull-left">密码</label>
+            <input id="password" name="password" type="password" class="form-control">
+          </div>
+           <a class="btn btn-primary ajax-submit" id="login">登录</a>
+      </form>
     </div>
-</div>
-<script>
-    function login() {
-        var username = $("#username").val();
-        var password = $("#password").val();
-        if (username==='') { layer.msg('用户名不能为空',{time:2000}); return false;}
-        if (password==='') { layer.msg('密码不能为空',{time:2000}); return false;}
-        $.post("/admin/Index/doLogin",{username:username, password:password},function (result) {
-            layer.msg(result.msg,{time:1000});
-            if(result.code===1) setTimeout(function(){
-                window.location.href=result.url;
-            },1000);
-        },"json");
-    }
-</script>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </body>
 </html>

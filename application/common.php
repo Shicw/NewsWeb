@@ -50,11 +50,11 @@ function cmf_captcha_check($value, $id = "")
 
 /**
  * 发送邮件，加载第三方类库PHPMailer
- * @param string $address 收件人邮箱
+ * @param string $email 收件人邮箱
  * @param string $message 邮件内容
  * @return array<br>
  */
-function sendEmail($address, $message)
+function sendEmail($email, $message)
 {
     //读取config表中的配置项
     $config = Db::name('config')->field(['key','value'])->where('module','mailer')->select();
@@ -62,12 +62,10 @@ function sendEmail($address, $message)
     $mail        = new \phpmailer\PHPMailer();
     // 设置PHPMailer使用SMTP服务器发送Email
     $mail->IsSMTP();
-    //$mail->IsHTML(true);
-    //$mail->SMTPDebug = 3;
     // 设置邮件的字符编码，若不指定，则为'UTF-8'
     $mail->CharSet = 'UTF-8';
     // 添加收件人地址，可以多次使用来添加多个收件人
-    $mail->AddAddress($address);
+    $mail->AddAddress($email);
     // 设置邮件正文
     $mail->Body = $config[0]['value'].$message;
     // 设置邮件头的From字段。

@@ -58,13 +58,13 @@ class DepartmentController extends AdminBaseController
         //php后端验证
         if ($this->request->isPost()) {
             $validate = new Validate([
-                'name' => 'require|chs|min:6|max:21',
+                'name' => 'require|chs|min:9|max:21',
                 'description' => 'chs|max:60',
             ]);
             $validate->message([
                 'name.require' => '部门名称不能为空',
                 'name.chs' => '部门名称只能为汉字',
-                'name.min' => '部门名称不能少于两个汉字',
+                'name.min' => '部门名称不能少于三个汉字',
                 'name.max' => '部门名称太长',
                 'description.chs' => '备注只能为中文',
                 'description.max' => '备注太长'
@@ -97,7 +97,7 @@ class DepartmentController extends AdminBaseController
         //php后端验证
         if ($this->request->isPost()) {
             $validate = new Validate([
-                'name' => 'require|chs|min:6|max:21',
+                'name' => 'require|chs|min:9|max:21',
                 'description' => 'chs|max:60',
             ]);
             $validate->message([

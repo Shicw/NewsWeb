@@ -26,23 +26,23 @@
                         <ul class="tabNav">
                             <li><span><a href="{:url('admin/DepartmentController/index')}">部门信息</a></span></li>
                             <li><span><a href="{:url('admin/DepartmentController/add')}">添加部门</a></span></li>
-                            <li class="now"><span><a href="{:url('admin/DepartmentController/edit')}">修改部门</a></span></li>
+                            <li class="now"><span><a href="javascript:">修改部门</a></span></li>
 
                         </ul>
                         <div class="tabCont" style="height: 200px;display: block">
-                            <form action="{:url('admin/DepartmentController/editPost')}" method="post">
+                            <form action="{:url('admin/DepartmentController/editPost')}" method="post" id="form">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="input-name"><span class="form-required">*</span>部门名称</label>
-                                        <input name="name" type="text" id="input-name"  class="form-control" value="{$depData['name']}">
+                                        <label for="name"><span class="form-required">*</span>部门名称</label>
+                                        <input name="name" type="text" id="name"  class="form-control" value="{$depData['name']}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-description">&nbsp;&nbsp;备注</label>
-                                        <input name="description" type="text" id="input-description" class="form-control" value="{$depData['description']}">
+                                        <label for="description">&nbsp;&nbsp;备注</label>
+                                        <input name="description" type="text" id="description" class="form-control" value="{$depData['description']}">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" hidden name="id" value="{$depData['id']}">
-                                        <button type="submit" class="btn btn-primary">保存</button>
+                                        <input type="text" hidden id="id" name="id" value="{$depData['id']}">
+                                        <a class="btn btn-primary ajax-submit">保存</a>
                                         <a class="btn btn-default" href="{:url('admin/DepartmentController/index')}">返回</a>
                                     </div>
                                 </div>
@@ -54,5 +54,6 @@
         </div>
     </div>
 </div>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </body>
 </html>

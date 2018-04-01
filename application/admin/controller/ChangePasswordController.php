@@ -17,7 +17,7 @@ class ChangePasswordController extends AdminBaseController
     }
     //修改密码提交
     public function changePost(){
-        $data = $this->request->param();
+        $data = $this->request->post();
         $username = $data['username'];
         $passwordOld = md5($data['passwordOld']);
         $passwordNew = md5($data['passwordNew']);

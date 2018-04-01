@@ -28,11 +28,11 @@
                           <li class="now"><span><a href="{:url('admin/NewsmakerController/add')}">添加发布者</a></span></li>
                       </ul>
                         <div class="tabCont" style="height: 200px; display: block;">
-                            <form action="{:url('admin/NewsmakerController/addPost')}" method="post">
+                            <form action="{:url('admin/NewsmakerController/addPost')}" method="post" id="form">
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label for="input-department"><span class="form-required">*</span>部门</label>
-                                    <select id="input-department" class="form-control" onchange="showStaff(this)">
+                                    <label for="department"><span class="form-required">*</span>部门</label>
+                                    <select id="department" name="department" class="form-control" onchange="showStaff(this)">
                                         <option value="" hidden>请选择部门</option>
                                         {volist name="depList" id="vo"}
                                         <option value="{$vo.id}">{$vo.name}</option>
@@ -40,13 +40,13 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-staff"><span class="form-required">*</span>姓名</label>
-                                    <select name="staff_id" id="input-staff" class="form-control">
+                                    <label for="staff_id"><span class="form-required">*</span>姓名</label>
+                                    <select name="staff_id" id="staff_id" class="form-control">
                                         <option value="" hidden>请选择员工</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary js-ajax-submit">添加</button>
+                                    <a class="btn btn-primary ajax-submit">添加</a>
                                     <a class="btn btn-default" href="newsmaker.html">返回</a>
                                 </div>
                             </div>
@@ -64,9 +64,9 @@
         var dep_id = self.value;
         $.post("/admin/newsmaker_controller/showStaff",{did:dep_id},function(data){
             if (data.code==1){
-                $("#input-staff option:not(:first)").remove();
+                $("#staff_id option:not(:first)").remove();
                 var data = data['data'];
-                var select = $("#input-staff");
+                var select = $("#staff_id");
                 for (var i = 0; i < data.length; i++) {
                     select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
                 }
@@ -74,5 +74,6 @@
         },"json");
     }
 </script>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </body>
 </html>

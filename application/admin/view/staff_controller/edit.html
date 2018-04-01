@@ -30,15 +30,15 @@
                       </ul>
                         <div class="tabCont" style="height: 530px;display: block;">
                             <div class="col-md-1"></div>
-                            <form action="{:url('admin/StaffController/editPost')}" method="post">
+                            <form action="{:url('admin/StaffController/editPost')}" method="post" id="form">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="input-name"><span class="form-required">*</span>姓名</label>
-                                        <input type="text" id="input-name" name="name" class="form-control" value="{$data['name']}">
+                                        <label for="name"><span class="form-required">*</span>姓名</label>
+                                        <input type="text" id="name" name="name" class="form-control" value="{$data['name']}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-sex"><span class="form-required">*</span>性别</label>
-                                        <select name="sex" id="input-sex" class="form-control">
+                                        <label for="sex"><span class="form-required">*</span>性别</label>
+                                        <select name="sex" id="sex" class="form-control">
                                             <option hidden>未设置</option>
                                             {php}$sexArray = array("1"=>"男","2"=>"女");{/php}
                                             {foreach name="sexArray" item="vo"}
@@ -48,8 +48,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-dep"><span class="form-required">*</span>部门</label>
-                                        <select name="dep_id" id="input-dep" class="form-control" onchange="updateDep(this);">
+                                        <label for="dep_id"><span class="form-required">*</span>部门</label>
+                                        <select name="dep_id" id="dep_id" class="form-control" onchange="updateDep(this);">
                                             <option hidden>请选择部门</option>
                                             {volist name="depList" id="vo"}
                                             {php}$selected=$vo['id']==$data['dep_id']?"selected":"";{/php}
@@ -58,8 +58,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-job"><span class="form-required">*</span>岗位</label>
-                                        <select name="job_id" id="input-job" class="form-control">
+                                        <label for="job_id"><span class="form-required">*</span>岗位</label>
+                                        <select name="job_id" id="job_id" class="form-control">
                                             <option value="" hidden>请选择岗位</option>
                                             {volist name="jobList" id="vo"}
                                             {php}$selected=$vo['id']==$data['job_id']?"selected":"";{/php}
@@ -69,27 +69,27 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-jnum"><span class="form-required">*</span>工号</label>
-                                        <input class="form-control" type="text" id="input-jnum" name="job_number" value="{$data['job_number']}">
+                                        <label for="jnum"><span class="form-required">*</span>工号</label>
+                                        <input class="form-control" type="text" id="jnum" name="job_number" value="{$data['job_number']}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-province"><span class="form-required">*</span>户籍地</label>
+                                        <label for="province"><span class="form-required">*</span>户籍地</label>
                                         <div class="form-inline">
-                                            <select name="province_id" id="input-province" class="form-control" onchange="provinceChange(this);">
+                                            <select name="province_id" id="province" class="form-control" onchange="provinceChange(this);">
                                                 <option hidden>请选择省份</option>
                                                 {volist name="provinceList" id="vo"}
                                                 {php}$selected=$vo['id']==$data['province_id']?"selected":"";{/php}
                                                 <option value="{$vo.id}" {$selected}>{$vo.name}</option>
                                                 {/volist}
                                             </select>
-                                            <select name="city_id" id="input-city" class="form-control" onchange="cityChange(this);">
+                                            <select name="city_id" id="city" class="form-control" onchange="cityChange(this);">
                                                 <option hidden>请选择城市</option>
                                                 {volist name="cityList" id="vo"}
                                                 {php}$selected=$vo['id']==$data['city_id']?"selected":"";{/php}
                                                 <option value="{$vo.id}" {$selected}>{$vo.name}</option>
                                                 {/volist}
                                             </select>
-                                            <select name="district_id" id="input-district" class="form-control">
+                                            <select name="district_id" id="district" class="form-control">
                                                 <option hidden>请选择区县</option>
                                                 {volist name="districtList" id="vo"}
                                                 {php}$selected=$vo['id']==$data['district_id']?"selected":"";{/php}
@@ -101,32 +101,32 @@
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="input-phone"><span class="form-required">*</span>手机</label>
-                                        <input type="tel" id="input-phone" name="mobile" class="form-control" value="{$data['mobile']}">
+                                        <label for="phone"><span class="form-required">*</span>手机</label>
+                                        <input type="tel" id="phone" name="mobile" class="form-control" value="{$data['mobile']}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-email"><span class="form-required">*</span>邮箱</label>
-                                        <input type="email" id="input-email" name="email" class="form-control" value="{$data['email']}">
+                                        <label for="email"><span class="form-required">*</span>邮箱</label>
+                                        <input type="email" id="email" name="email" class="form-control" value="{$data['email']}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-bir"><span class="form-required">*</span>出生时间</label>
+                                        <label for="bir"><span class="form-required">*</span>出生时间</label>
                                         <input class="form-control jeinput" name="birthday" placeholder="请选择时间"
-                                           value="{$data['last_login_time']|date='Y-m-d',###}" type="text" id="input-bir" onfocus=this.blur() >
+                                           value="{$data['last_login_time']|date='Y-m-d',###}" type="text" id="bir" onfocus=this.blur() >
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-employ_date"><span class="form-required">*</span>入职时间</label>
+                                        <label for="employ_date"><span class="form-required">*</span>入职时间</label>
                                         <input class="form-control jeinput" name="employ_date" placeholder="请选择时间"
-                                               value="{$data['employ_date']|date='Y-m-d',###}" type="text" id="input-employ_date" onfocus=this.blur() >
+                                               value="{$data['employ_date']|date='Y-m-d',###}" type="text" id="employ_date" onfocus=this.blur() >
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-username"><span class="form-required">*</span>登录名</label>
-                                        <input type="text" readonly id="input-username" class="form-control" value="{$data['username']}">
+                                        <label for="username"><span class="form-required">*</span>登录名</label>
+                                        <input type="text" readonly id="username" class="form-control" value="{$data['username']}">
                                     </div>
 
                                     <div class="form-group pull-right" style="margin-top: 30px;">
                                         <input type="text" hidden value="{$data['id']}" name="id">
-                                        <button type="submit" class="btn btn-primary">保存</button>
+                                        <a class="btn btn-primary ajax-submit">保存</a>
                                         <a class="btn btn-default" href="{:url('admin/StaffController/index')}">返回</a>
                                     </div>
                                 </div>
@@ -138,47 +138,16 @@
         </div>
     </div>
 </div>
-
 <script>
-    $("#input-employ_date").jeDate({
+    $("#employ_date").jeDate({
         format: "YYYY-MM-DD"
     });
-    $("#input-bir").jeDate({
+    $("#bir").jeDate({
         format: "YYYY-MM-DD"
     });
-    //当更换部门时，ajax异步加载岗位select
-    function updateDep(self){
-        var did = self.value;
-        $.post("/index/person/loadJobs",{did:did},function(data){
-            if(data.code == 1){
-                reloadJobs(data);
-            }
-        },"json");
-    }
-    //当更改部门时，加载岗位
-    function reloadJobs(data) {
-        //删除除第一条option以外的所有option(第一条option为"请选择")
-        $("#input-job option:not(:first)").remove();
-
-        var data = data['data'];
-        var select = $("#input-job");
-        for (var i = 0; i < data.length; i++) {
-            select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
-        }
-    }
-    //ajax检验登录名是否重复
-    function checkUsername(self) {
-        var username= self.value;
-        $.post("/admin/staff_controller/checkUsername",{username:username},function(data){
-            debugger;
-            if (data.data==1){
-                $("#error").removeAttr("hidden");
-            }else{
-                $("#error").attr("hidden","true");
-            }
-        },"json");
-    }
 </script>
-<script type="text/javascript" src="__STATIC__/js/provinceCity.js"></script>
+<script src="__STATIC__/js/ajax-form.js"></script>
+<script src="__STATIC__/js/provinceCity.js"></script>
+<script src="__STATIC__/js/dep-job.js"></script>
 </body>
 </html>

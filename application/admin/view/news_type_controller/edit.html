@@ -30,19 +30,19 @@
 
                         </ul>
                         <div class="tabCont" style="height: 200px;display: block">
-                            <form action="{:url('admin/NewsTypeController/editPost')}" method="post">
+                            <form action="{:url('admin/NewsTypeController/editPost')}" method="post" id="form">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="input-name"><span class="form-required">*</span>类别名称</label>
-                                        <input type="text" id="input-name" name="name" class="form-control" value="{$typeData['name']}">
+                                        <label for="name"><span class="form-required">*</span>类别名称</label>
+                                        <input type="text" id="name" name="name" class="form-control" value="{$typeData['name']}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-description">&nbsp;&nbsp;备注</label>
-                                        <input type="text" id="input-description" name="description" class="form-control" value="{$typeData['description']}">
+                                        <label for="description">&nbsp;&nbsp;备注</label>
+                                        <input type="text" id="description" name="description" class="form-control" value="{$typeData['description']}">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" hidden name="id" value="{$typeData['id']}">
-                                        <button type="submit" class="btn btn-primary">添加</button>
+                                        <input type="text" hidden id="id" name="id" value="{$typeData['id']}">
+                                        <a class="btn btn-primary ajax-submit">添加</a>
                                         <a class="btn btn-default" href="{:url('admin/NewsTypeController/index')}">返回</a>
                                     </div>
                                 </div>
@@ -54,5 +54,6 @@
         </div>
     </div>
 </div>
+<script src="__STATIC__/js/ajax-form.js"></script>
 </body>
 </html>

@@ -51,12 +51,12 @@ class ConfigController extends AdminBaseController
     //验证码邮箱配置提交
     public function mailerPost(){
         $data = $this->request->post();
-        $config = [
+        $config= [
             ['id'=>3,'key'=>'from_name','value'=>$data['fromname']],
             ['id'=>8,'key'=>'username','value'=>$data['username']],
             ['id'=>9,'key'=>'password','value'=>$data['password']],
             ['id'=>4,'key'=>'host','value'=>$data['host']],
-            ['id'=>5,'key'=>'prot','value'=>$data['port']],
+            ['id'=>5,'key'=>'port','value'=>$data['port']],
             ['id'=>6,'key'=>'smtp_secure','value'=>$data['secure']],
             ['id'=>7,'key'=>'subject','value'=>$data['subject']],
             ['id'=>2,'key'=>'body','value'=>$data['body']],

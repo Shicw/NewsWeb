@@ -65,15 +65,15 @@
         </ul>
         <div class="am-tabs-bd">
           <div class="am-tab-panel am-active">
-              <form class="am-form">
+              <form class="am-form" action="{:url('index/personController/editPost')}" method="post" id="form">
                   <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                       <div class="am-form-group">
-                          <label for="name">姓名：</label>
-                          <input id="name" value="{$user.name}" type="text">
+                          <label for="name">姓名</label>
+                          <input name="name" id="name" value="{$user.name}" type="text">
                       </div>
                       <div class="am-form-group">
-                          <label for="sex">性别：</label>
-                          <select id="sex" >
+                          <label for="sex">性别</label>
+                          <select name="sex" id="sex" >
                               <option hidden>未设置</option>
                               {php}$sexArray = array("1"=>"男","2"=>"女");{/php}
                               {foreach name="sexArray" item="vo"}
@@ -83,8 +83,8 @@
                           </select>
                       </div>
                       <div class="am-form-group">
-                          <label for="dep_id">所属部门：</label>
-                          <select id="dep_id"  onchange="updateDep(this);">
+                          <label for="dep_id">所属部门</label>
+                          <select name="dep_id" id="dep_id"  onchange="updateDep(this);">
                               <option hidden>请选择部门</option>
                               {volist name="depList" id="vo"}
                               {php}$selected = $user['dep_id'] == $vo['id'] ? "selected" : "";{/php}
@@ -94,8 +94,8 @@
                       </div>
 
                       <div class="am-form-group">
-                          <label for="job_id">岗位：</label>
-                          <select id="job_id">
+                          <label for="job_id">岗位</label>
+                          <select name="job_id" id="job_id">
                               <option hidden>请选择岗位</option>
                               {volist name="jobList" id="vo"}
                               {php}$selected = $user['job_id'] == $vo['id'] ? "selected" : "";{/php}
@@ -105,23 +105,24 @@
                       </div>
                       <div class="am-form-group">
                           <label for="job_number">工号</label>
-                          <input id="job_number" value="{$user['job_number']}" type="text">
+                          <input name="job_number" id="job_number" value="{$user['job_number']}" type="text">
                       </div>
                   </div>
                   <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                       <div class="am-form-group">
-                          <label for="mobile">手机：</label>
-                          <input type="tel" id="mobile" value="{$user['mobile']}"/>
+                          <label for="mobile">手机</label>
+                          <input type="tel" name="mobile" id="mobile" value="{$user['mobile']}"/>
                       </div>
                       <div class="am-form-group">
-                          <label for="email">邮箱：</label>
-                          <input type="email" id="email" value="{$user['email']}" />
+                          <label for="email">邮箱</label>
+                          <input type="email" name="email" id="email" value="{$user['email']}" />
                       </div>
                       <div class="am-form-group">
-                          <label for="birthday">出生日期：</label>
+                          <label for="birthday">出生日期</label>
                           <div class="am-input-group am-datepicker-date"
                                data-am-datepicker="{format: 'yyyy-mm-dd', viewMode: 'years'}">
-                              <input type="text" id="birthday"
+                              <label hidden>出生日期</label>
+                              <input type="text" name="birthday" id="birthday"
                                      value="{$user['birthday']|date='Y-m-d',###}" readonly/>
                               <span class="am-input-group-btn am-datepicker-add-on">
                               <button class="am-btn am-btn-default" type="button"><span class="am-icon-calendar"></span> </button>
@@ -129,10 +130,11 @@
                           </div>
                       </div>
                       <div class="am-form-group">
-                          <label for="employ_date">入职时间：</label>
+                          <label for="employ_date">入职时间</label>
                           <div class="am-input-group am-datepicker-date"
                                data-am-datepicker="{format: 'yyyy-mm-dd', viewMode: 'years'}">
-                              <input type="text" id="employ_date"
+                              <label hidden>入职时间</label>
+                              <input type="text" name="employ_date" id="employ_date"
                                      value="{$user['employ_date']|date='Y-m-d',###}" readonly/>
                               <span class="am-input-group-btn am-datepicker-add-on">
                               <button class="am-btn am-btn-default" type="button"><span class="am-icon-calendar"></span> </button>
@@ -140,10 +142,10 @@
                           </div>
                       </div>
                       <div class="am-form-group">
-                          <label for="province">户籍地：</label>
+                          <label for="province">户籍地</label>
                           <div class="am-form-inline">
                               <div class="am-form-group">
-                                  <select id="province" onchange="provinceChange(this)">
+                                  <select name="province_id" id="province" onchange="provinceChange(this)">
                                       <option hidden> 请选择省份</option>
                                       {volist name="$provinceList" id="vo"}
                                       {php}$selected = $vo['id'] == $user['province_id'] ? "selected" : ""{/php}
@@ -152,7 +154,7 @@
                                   </select>
                               </div>
                               <div class="am-form-group">
-                                  <select id="city" onchange="cityChange(this)">
+                                  <select name="city_id" id="city" onchange="cityChange(this)">
                                       <option hidden> 请选择城市</option>
                                       {volist name="$cityList" id="vo"}
                                       {php}$selected = $vo['id'] == $user['city_id'] ? "selected" : ""{/php}
@@ -161,7 +163,7 @@
                                   </select>
                               </div>
                               <div class="am-form-group">
-                                  <select id="district">
+                                  <select name="district_id" id="district">
                                       <option hidden> 请选择区县</option>
                                       {volist name="$districtList" id="vo"}
                                       {php}$selected = $vo['id'] == $user['district_id'] ? "selected" : ""{/php}
@@ -172,9 +174,9 @@
                           </div>
                       </div>
                   </div>
-                  <input type="hidden" id="id" value="{$user['id']}">
+                  <input type="hidden" name="id" id="id" value="{$user['id']}">
                   <div class="am-u-sm-12 am-u-md-12 am-u-lg-12" style="text-align: center">
-                      <a class="am-btn am-btn-success" style="padding:10px 50px" onclick="editPost()">保存</a>
+                      <a class="am-btn am-btn-success ajax-submit" style="padding:10px 50px">保存</a>
                       <a href="{:url('index/PersonController/index')}" class="am-btn am-btn-danger" style="padding:10px 50px">重置</a>
                   </div>
               </form>
@@ -198,25 +200,25 @@
           </div>
           <div class="am-tab-panel">
             <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
-              <form class="am-form">
+              <form class="am-form" action="{:url('index/personController/pwdEdit')}" method="post">
                <div class="am-form-group">
-                <label for="username">用户名：</label>
-                <input type="text" id="username"/>
+                <label for="username">用户名</label>
+                <input type="text" name="username" id="username"/>
                </div>
                <div class="am-form-group">
-                  <label for="passwordOld">旧密码：</label>
-                  <input type="password" id="passwordOld"/>
+                  <label for="passwordOld">旧密码</label>
+                  <input type="password" name="passwordOld" id="passwordOld"/>
                </div>
                <div class="am-form-group">
-                  <label for="passwordNew">新密码：</label>
-                  <input type="password" id="passwordNew" placeholder="只能包含数字、字母、_、-；6-12位"/>
+                  <label for="passwordNew">新密码</label>
+                  <input type="password" name="passwordNew" id="passwordNew" placeholder="只能包含数字、字母、_、-；6-12位"/>
                </div>
                <div class="am-form-group">
-                   <label for="passwordNewAgain">新密码：</label>
-                   <input type="password" id="passwordNewAgain"/>
+                   <label for="passwordNewAgain">新密码</label>
+                   <input type="password" name="passwordNewAgain" id="passwordNewAgain"/>
                </div>
                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12" style="text-align: center">
-                   <a class="am-btn am-btn-success" style="padding:10px 50px" onclick="pwdEdit()">保存</a>
+                   <a class="am-btn am-btn-success" onclick="pwdEdit()" style="padding:10px 50px">保存</a>
                </div>
               </form>
             </div>
@@ -237,27 +239,6 @@
 {include file="public/footer" /}
 </body>
 <script>
-  
-  //当更换部门时，ajax异步加载岗位select
-  function updateDep(self){
-      var did = self.value;
-      $.post("/index/person_controller/loadJobs",{did:did},function(data){
-          if(data.code == 1){
-              reloadJobs(data);
-          }
-      },"json");
-  }
-  //当更改部门时，加载岗位
-  function reloadJobs(data) {
-      //删除除第一条option以外的所有option(第一条option为"请选择")
-      $("#job_id option:not(:first)").remove();
-
-      var data = data['data'];
-      var select = $("#job_id");
-      for (var i = 0; i < data.length; i++) {
-          select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
-      }
-  }
   //当选择图片input值变化,且大小小于0.5M才能点击确认按钮
   $('#avatar').change(function () {
       //获取当前上传图片
@@ -284,26 +265,7 @@
   });
 </script>
 <script>
-    //个人信息修改提交ajax
-    function editPost(){
-        var name = $("#name").val();              var sex = $("#sex").val();
-        var dep_id = $("#dep_id").val();          var job_id = $("#job_id").val();
-        var job_number = $("#job_number").val();  var email = $("#email").val();
-        var mobile = $("#mobile").val();          var birthday = $("#birthday").val();
-        var employ_date = $("#employ_date").val();var province_id = $("#province").val();
-        var city_id = $("#city").val();        var district_id = $("#district").val();
-        var id = $("#id").val();
-        $.post("/index/person_controller/editPost",{
-            name:name,sex:sex,dep_id:dep_id,
-            job_id:job_id,job_number:job_number,
-            email:email,mobile:mobile,
-            birthday:birthday,employ_date:employ_date,
-            province_id:province_id,city_id:city_id,
-            district_id:district_id,id:id
-        },function (result) {
-            layer.msg(result.msg,{time:1500});
-        },"json");
-    }
+
     //修改头像ajax
     function avatarPost() {
         //var files = $('#avatar');
@@ -365,5 +327,7 @@
         });
     }
 </script>
-<script type="text/javascript" src="__STATIC__/js/provinceCity.js"></script>
+<script src="__STATIC__/js/provinceCity.js"></script>
+<script src="__STATIC__/js/ajax-form.js"></script>
+<script src="__STATIC__/js/dep-job.js"></script>
 </html>
