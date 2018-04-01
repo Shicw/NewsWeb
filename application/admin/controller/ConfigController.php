@@ -34,9 +34,9 @@ class ConfigController extends AdminBaseController
         $result = Db::name('config')->where('key','open_register')->update(['value'=>$status]);
         $msg = $status ? "开启" : "关闭";
         if($result){
-            $this->success($msg.'注册功能成功！',url('ConfigController/openRegister'),$msg.'注册功能');
+            $this->success($msg.'注册功能成功！','',$msg.'注册功能');
         }else{
-            $this->error($msg.'注册功能失败！');
+            $this->error('没有修改配置!');
         }
     }
     //验证码邮箱配置
