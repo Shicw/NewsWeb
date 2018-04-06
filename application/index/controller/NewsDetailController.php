@@ -118,11 +118,11 @@ class NewsDetailController extends UserBaseController
             ['jobs j','j.id=s.job_id'],
         ])->field(['s.email','s.mobile','d.name dep','j.name job'])
             ->where(['s.delete_time'=>0,'s.id'=>$id])->find();
-        $code = $data ? 1 : 0;
-        return json([
-            'code' => $code,
-            'data' => $data
-        ]);
+        if($data){
+            $this->success('','',$data);
+        }else{
+            $this->error('未查询到用户信息');
+        }
     }
 
 }

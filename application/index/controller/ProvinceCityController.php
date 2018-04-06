@@ -22,9 +22,7 @@ class ProvinceCityController extends UserBaseController
         $result = $model->where(['parent_id'=>$pid, 'level'=>$level, 'delete_time'=>0])->field(['id', 'name'])->select();
 
         return json([
-            "code" => 1,
-            "msg"  => "加载成功",
-            "data" => $result,
+            "data" => $result
         ]);
 
     }

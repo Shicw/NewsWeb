@@ -242,11 +242,14 @@ class NewsController extends AdminBaseController
         //将查询出的数组json化，并且防止中文变成unicode
         $typeCount = json_encode($typeCount,JSON_UNESCAPED_UNICODE);
         $depCount = json_encode($depCount,JSON_UNESCAPED_UNICODE);
-        return json([
-            "code" => 1,
-            "msg"  => "加载成功",
+        $data = [
             "typeCount" => $typeCount,
             "depCount" => $depCount
-        ]);
+        ];
+        if($typeCount && $depCount){
+            $this->success('图表信息查询成功','',$data);
+        }else{
+            $this->error('图表信息查询失败！');
+        }
     }
 }

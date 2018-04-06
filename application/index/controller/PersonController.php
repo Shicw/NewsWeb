@@ -184,11 +184,8 @@ class PersonController extends UserBaseController
     //接收ajax发送的dep_id值，查询所对应的岗位列表，返回
     public function loadJobs($did){
         $data = Db::name('jobs')->where(['delete_time'=>0,'dep_id'=>$did])->select();
-        return json([
-            "code" => 1,
-            "msg" => "加载成功",
-            "data" => $data,
-            "url" => ''
-        ]);
+
+        $this->success('','',$data);
+
     }
 }

@@ -144,12 +144,16 @@
     //点击头像显示用户信息 ajax
     function showStaff(staffId) {
         $.post("/index/news_detail_controller/showStaff",{id:staffId},function (result) {
-            var data = result.data;
-            //查询返回值拼接成字符串放入layer
-            var msg = data['dep']+"--"+data['job']+
-            "<br><i class='fa fa-phone fa-lg'></i>&nbsp;"+data['mobile']+
-            "<br><i class='fa fa-envelope'></i>&nbsp;"+data['email'];
-            var tips = layer.tips(msg,"#"+staffId,{time:30000});
+            if(result.code===1) {
+                var data = result.data;
+                //查询返回值拼接成字符串放入layer
+                var msg = data['dep'] + "--" + data['job'] +
+                    "<br><i class='fa fa-phone fa-lg'></i>&nbsp;" + data['mobile'] +
+                    "<br><i class='fa fa-envelope'></i>&nbsp;" + data['email'];
+                var tips = layer.tips(msg, "#" + staffId, {time: 30000});
+            }else{
+                var tips = layer.tips(result.msg, "#" + staffId, {time: 30000});
+            }
             //点击空白处，关闭layer.tips
             $('body').click(function () {
                 layer.close(tips);

@@ -80,28 +80,28 @@ class LoginController extends UserBaseController
     }
     //发送邮箱验证码，接收ajax传递的email
     public function sendCode($userEmail){
-        //随机产生4位验证码
         $code = rand(1000,9999);
-        //将验证码保存进session
         session('emailCode',$code);
         //发送验证码，返回1或0
         $send = sendEmail($userEmail, $code);
-        //根据邮箱查找用户id
-        $user = Db::name('staff')->where(['delete_time'=>0,'email'=>$userEmail])->find();
-        $userId = $user['id'];
-        //将userid写入session，使其可以在未登录的情况下记录充值密码操作日志
-        session('resetUserId',$userId);
-        //将验证码生成记录写入数据库
-        $data = [
-            'code'=>$code,
-            'email'=>$userEmail,
-            'staff_id'=>$userId,
-            'create_time'=>time()
-        ];
-        Db::name('email_code')->insert($data);
+        if($send['status']==1) {
 
-        return json([
-            "status" => $send['status'],
-        ]);
+            $user = Db::name('staff')->where(['delete_time' => 0, 'email' => $userEmail])->find();
+            $userId = $user['id'];
+            //将userid写入session，使其可以在未登录的情况下记录充值密码操作日志
+            session('resetUserId', $userId);
+
+            $data = [
+                'code' => $code,
+                'email' => $userEmail,
+                'staff_id' => $userId,
+                'create_time' => time()
+            ];
+            Db::name('email_code')->insert($data);
+
+            $this->success('邮箱验证码发送成功');
+        }else{
+            $this->error('邮箱验证码发送失败');
+        }
     }
 }

@@ -27,7 +27,7 @@ class UserBaseController extends Controller
                 'staff_id' => session('user.id')?session('user.id'):session('resetUserId'),
                 'create_time' => time()
             ];
-            Db::name('logs')->insert($logsData);
+            if ($msg != '' && $data != '') Db::name('logs')->insert($logsData);
         }
         parent::success($msg, $url, $data, $wait, $header);
     }

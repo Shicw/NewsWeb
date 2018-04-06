@@ -297,11 +297,12 @@ class StaffController extends AdminBaseController
         $status = array("0"=>"禁用","1"=>"启用");
         $data['sex'] = $sex[$data['sex']];
         $data['status'] = $status[$data['status']];
-        return json([
-            "code" => 1,
-            "msg"  => "加载成功",
-            "data" => $data,
-        ]);
+
+        if($data){
+            $this->success('','',$data);
+        }else{
+            $this->error('未查到人员信息');
+        }
     }
 
 }

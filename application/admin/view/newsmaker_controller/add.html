@@ -62,15 +62,13 @@
     //ajax显示所选部门下的员工列表
     function showStaff(self) {
         var dep_id = self.value;
-        $.post("/admin/newsmaker_controller/showStaff",{did:dep_id},function(data){
-            if (data.code==1){
-                $("#staff_id option:not(:first)").remove();
-                var data = data['data'];
-                var select = $("#staff_id");
-                for (var i = 0; i < data.length; i++) {
-                    select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
-                }
-            }
+        $.post("/admin/newsmaker_controller/showStaff",{did:dep_id},function(result){
+             $("#staff_id option:not(:first)").remove();
+             var data = result['data'];
+             var select = $("#staff_id");
+             for (var i = 0; i < data.length; i++) {
+                 select.append('<option  value="' + data[i]['id'] + '">' + data[i]['name'] + '</option>');
+             }
         },"json");
     }
 </script>

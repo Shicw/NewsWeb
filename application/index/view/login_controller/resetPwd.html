@@ -82,12 +82,10 @@
         var load = layer.load(0, {shade: false});
         $.post("/index/login_controller/sendCode",{userEmail:email.val()},function (result) {
             layer.close(load);
-            if (result.status===1){
+            if (result.code===1){
                 $("#getCode").attr('disabled',true);
-                layer.msg("验证码发送成功!");
-            }else {
-                layer.msg("验证码发失败!");
             }
+            layer.msg(result.msg,{time:1500});
         },"json");
     }
 </script>

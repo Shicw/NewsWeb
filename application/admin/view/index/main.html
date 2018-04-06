@@ -163,11 +163,9 @@
 	//获取仪表盘数据
 	function dashboard() {
 		$.post('/admin/Index/dashboard',{},function (result) {
-		    if (result.code==1){
-		        $(".comment").html(result.data['comment']);
-                $(".news").html(result.data['news']);
-                $(".online").html(result.data['online']);
-			}
+		    $(".comment").html(result.data['comment']);
+            $(".news").html(result.data['news']);
+            $(".online").html(result.data['online']);
         },"json");
     }
     //获取系统时间
@@ -210,9 +208,6 @@
                 matchType(today.type, ".today");
                 matchType(tomorrow.type, ".tomorrow");
                 matchType(afterTomorrow.type, ".afterTomorrow");
-                //console.log(tips);
-                //console.log(today);
-
             }
         });
     }
@@ -231,26 +226,21 @@
         //var overcast = /\u9634/;
         var imgName =  rain.test(type)?"rain":(sun.test(type)?"sun":(cloud.test(type)?"cloud":"overcast"));
         $(date).find('img').attr('src','__STATIC__/admin/images/'+imgName+'.png');
-        //console.log(imgName);
     }
 
     function getNewsCount(){
 	    $.post("/admin/news_controller/getNewsCount",{},function (result) {
-	        if(result.code==1){
-	            //console.log(result.typeCount);
-	            //console.log(result.depCount);
-	            //console.log(JSON.parse(result.typeCount));
-                //console.log(JSON.parse(result.depCount));
+	        if(result.code===1){
                 //绘制新闻类别数量饼图
                 Morris.Donut({
                     element: 'newsTypeChart',
-                    data: JSON.parse(result.typeCount),
+                    data: JSON.parse(result.data.typeCount),
                     resize: true
                 });
                 //绘制部门新闻数量条形图
                 Morris.Donut({
                     element: 'newsDepChart',
-                    data: JSON.parse(result.depCount),
+                    data: JSON.parse(result.data.depCount),
                     resize: true
                 });
 			}

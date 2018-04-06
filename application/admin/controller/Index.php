@@ -91,10 +91,6 @@ class Index extends AdminBaseController
             'news' => $newsCount,
             'online' => $onlineCount,
         ];
-        return json([
-            "code" => 1,
-            "msg"  => "加载成功",
-            "data" => $data,
-        ]);
+        return json(["data" => $data]);
     }
 }

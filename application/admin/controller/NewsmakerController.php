@@ -122,12 +122,7 @@ class NewsmakerController extends AdminBaseController
     public function showStaff($did){
         $data = Db::name('staff')->field(['id','name'])
             ->where(['delete_time'=>0,'dep_id'=>$did])->select();
-        return json([
-            "code" => 1,
-            "msg"  => "加载成功",
-            "data" => $data,
-            "url"  => ''
-        ]);
+        $this->success('','',$data);
     }
 
 }

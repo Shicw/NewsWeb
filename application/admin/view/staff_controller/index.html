@@ -142,23 +142,26 @@
 <script>
     //点击，ajax触发模态框展示人员详情
     function showDetail(id){
-        $.post("/admin/staff_controller/showDetail",{id:id},function(data){
-            if(data.code==1){
+        $.post("/admin/staff_controller/showDetail",{id:id},function(result){
+            if(result.code===1){
                 //console.log(result.data);
                 $('.modal-title').html("人员详细信息");
-                $('.body1').html("<div class='form-group'><label>姓名：</label><div>"+data.data['name']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>性别：</label><div>"+data.data['sex']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>部门：</label><div>"+data.data['dep']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>岗位：</label><div>"+data.data['job']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>工号：</label><div>"+data.data['job_number']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>户籍地：</label><div>"+data.data['province']+data.data['city']+data.data['district']+"</div></div>"
+                $('.body1').html("<div class='form-group'><label>姓名：</label><div>"+result.data['name']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>性别：</label><div>"+result.data['sex']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>部门：</label><div>"+result.data['dep']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>岗位：</label><div>"+result.data['job']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>工号：</label><div>"+result.data['job_number']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>户籍地：</label><div>"+result.data['province']+result.data['city']+result.data['district']+"</div></div>"
                 );
-                $('.body2').html("<div class='form-group'><label class='control-label'>手机：</label><div>"+data.data['mobile']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>邮箱：</label><div>"+data.data['email']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>出生日期：</label><div>"+data.data['birthday']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>入职日期：</label><div>"+data.data['employ_date']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>登录名：</label><div>"+data.data['username']+"</div></div>"+
-                    "<div class='form-group'><label class='control-label'>状态：</label><div>"+data.data['status']+"</div></div>");
+                $('.body2').html("<div class='form-group'><label class='control-label'>手机：</label><div>"+result.data['mobile']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>邮箱：</label><div>"+result.data['email']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>出生日期：</label><div>"+result.data['birthday']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>入职日期：</label><div>"+result.data['employ_date']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>登录名：</label><div>"+result.data['username']+"</div></div>"+
+                    "<div class='form-group'><label class='control-label'>状态：</label><div>"+result.data['status']+"</div></div>");
+            }else{
+                $('.modal-title').html("错误");
+                $('.modal-body').html(result.msg);
             }
         },"json");
     }
