@@ -63,7 +63,7 @@ class ConfigController extends AdminBaseController
         ];
         $result = $this->model->saveAll($config);
         if(!empty($result)){
-            $this->success('邮箱配置修改成功',url('admin/ConfigController/mailer'),'修改邮箱配置');
+            $this->success('邮箱配置修改成功','','修改邮箱配置');
         }else{
             $this->error('邮箱配置修改失败');
         }

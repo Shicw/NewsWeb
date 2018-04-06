@@ -42,7 +42,7 @@
                                     <div class="form-group">
                                         <label for="sex"><span class="form-required">*</span>性别</label>
                                         <select name="sex" id="sex" class="form-control">
-                                            <option hidden>未设置</option>
+                                            <option value="" hidden>未设置</option>
                                             {php}$sexArray = array("1"=>"男","2"=>"女");{/php}
                                             {foreach name="sexArray" item="vo"}
                                             <option value="{$key}">{$vo}</option>
@@ -52,7 +52,7 @@
                                     <div class="form-group">
                                         <label for="dep_id"><span class="form-required">*</span>部门</label>
                                         <select name="dep_id" id="dep_id" class="form-control" onchange="updateDep(this);">
-                                            <option hidden>请选择部门</option>
+                                            <option value="" hidden>请选择部门</option>
                                             {volist name="depList" id="vo"}
                                             <option value="{$vo.id}">{$vo.name}</option>
                                             {/volist}
@@ -61,7 +61,7 @@
                                     <div class="form-group">
                                         <label for="job_id"><span class="form-required">*</span>岗位</label>
                                         <select name="job_id" id="job_id" class="form-control">
-                                            <option hidden>请选择岗位</option>
+                                            <option value="" hidden>请选择岗位</option>
                                         </select>
                                     </div>
 
@@ -73,16 +73,16 @@
                                         <label for="province"><span class="form-required">*</span>户籍地</label>
                                         <div class="form-inline">
                                             <select name="province_id" id="province" class="form-control" onchange="provinceChange(this);">
-                                                <option hidden>请选择省份</option>
+                                                <option value="" hidden>请选择省份</option>
                                                 {volist name="provinceList" id="vo"}
                                                 <option value="{$vo.id}">{$vo.name}</option>
                                                 {/volist}
                                             </select>
                                             <select name="city_id" id="city" class="form-control" onchange="cityChange(this);">
-                                                <option hidden>请选择城市</option>
+                                                <option value="" hidden>请选择城市</option>
                                             </select>
                                             <select name="district_id" id="district" class="form-control">
-                                                <option hidden>请选择区县</option>
+                                                <option value="" hidden>请选择区县</option>
                                             </select>
                                         </div>
                                     </div>

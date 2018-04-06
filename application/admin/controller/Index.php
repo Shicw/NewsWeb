@@ -72,7 +72,7 @@ class Index extends AdminBaseController
     public function top(){
         $this->isLogin();
         $admin = session('admin');
-        $this->assign($admin);
+        $this->assign('admin',$admin);
         return $this->fetch();
     }
 

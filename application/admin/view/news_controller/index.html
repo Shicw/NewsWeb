@@ -13,9 +13,15 @@
                     <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
                     <a href="{:url('admin/Index/index')}" target="_top">首页</a>
                     <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    {eq name="userType" value="0"}
                     <a href="">门户管理</a>
                     <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
                     <a href="{:url('admin/NewsController/index')}">新闻管理</a>
+                    {else/}
+                    <a href="">新闻管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/NewsController/index')}">我的发布记录</a>
+                    {/eq}
                 </div>
                 <!--当前位置-->
             </div>
@@ -75,7 +81,7 @@
                                     <td>{$vo.type}</td>
                                     <td>{$vo.dep}</td>
                                     <td>
-                                        <a href="{:url('index/NewsDetail/index',array('id'=>$vo['id']))}" target="_Blank" title="点击查看新闻详情">
+                                        <a href="{:url('index/NewsDetailController/index',array('id'=>$vo['id']))}" target="_Blank" title="点击查看新闻详情">
                                             {$vo.title}
                                         </a>
                                     </td>

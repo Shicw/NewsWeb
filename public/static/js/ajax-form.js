@@ -2,14 +2,15 @@ $(".ajax-submit").click(function() {
     var form = $("#form");
     //获取表单数据
     var formData = form.serializeArray();
-    //console.log(formData);
+    console.log(formData);
     //验证表单数据是否全部填写
     for(var i=0;i<formData.length;i++){
         var value = formData[i].value;
         //若某个input未输入,则弹窗提示
         if(value === ''){
             //循环时,获取当前所对应的input标签的上一个同级标签的text值,即所对应的label的文本值
-            var msg = $("input[name='"+formData[i].name+"']").prev().text();
+            //var msg = $("input[name='"+formData[i].name+"']").prev().text();
+            var msg = $("#"+formData[i].name).prev().text();
             layer.msg('请输入'+msg,{time:2000});
             return false;
         }

@@ -268,13 +268,11 @@
 
     //修改头像ajax
     function avatarPost() {
-        //var files = $('#avatar');
-        //console.log(files.prop('files'));
-        //console.log(files[0].files);
         var file = $('#avatar')[0].files;
         //将图片信息放入formData，然后再通过ajax传递给PHP
         var avatar = new FormData();
         avatar.append('avatar', file[0]);
+        //console.log(avatar);
         $.ajax({
             type: "post",
             dataType: "json",
@@ -286,7 +284,7 @@
             success: function (result) {
                 layer.msg(result.msg,{time:1000});
                 //头像修改成功后，将确认按钮变成不可点击状态
-                if(result.code==1) $('#submit').attr('disabled','true');
+                if(result.code===1) $('#submit').attr('disabled','true');
             }
         });
     }

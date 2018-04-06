@@ -91,6 +91,20 @@ class NewsController extends AdminBaseController
     }
     //添加新闻提交
     public function addPost(){
+        //先判断是否接受到图片，有则先处理图片，返回图片名；然后在接收ajax传递新闻内容
+        if(request()->file('image')) {
+            //获取图片信息
+            $file = request()->file('image');
+            //如果有上传图片，则处理图片文件，否则$imgName置空写入数据库
+            $imgName = '';
+            if ($file) {
+                //将图片保存到/public/static/news_imgs 目录下
+                $info = $file->move(ROOT_PATH . 'public/static' . DS . 'news_imgs');
+                //获取图片的文件名
+                $imgName = $info->getSaveName();
+                $this->success('','',$imgName);
+            }
+        }
         //php后端验证
         if ($this->request->isPost()) {
             $validate = new Validate([
@@ -102,6 +116,7 @@ class NewsController extends AdminBaseController
             $validate->message([
                 'type_id.require' => '新闻类别不能为空',
                 'dep_id.require' => '部门不能为空',
+                'title.require' => '标题不能为空',
                 'title.min' => '标题太短',
                 'title.max' => '标题太长',
                 'content.require' => '内容不能为空',
@@ -113,21 +128,11 @@ class NewsController extends AdminBaseController
             }
             //获取发布者id
             $publisher = session('admin.id');
-            //获取图片信息
-            $file = request()->file('image');
-            //如果有上传图片，则处理图片文件，否则$imgName置空写入数据库
-            $imgName = '';
-            if($file) {
-                //将图片保存到/public/static/news_imgs 目录下
-                $info = $file->move(ROOT_PATH . 'public/static' . DS . 'news_imgs');
-                //获取图片的文件名
-                $imgName = $info->getSaveName();
-            }
             $time = time();
             $data = [
                 'title' => $data['title'],
                 'content' => $data['content'],
-                'img' => $imgName,
+                'img' => $data['imgName'],
                 'dep_id' => $data['dep_id'],
                 'type_id' => $data['type_id'],
                 'create_time' => $time,
@@ -167,6 +172,20 @@ class NewsController extends AdminBaseController
     }
     //新闻修改提交
     public function editPost(){
+        //先判断是否接受到图片，有则先处理图片，返回图片名；然后在接收ajax传递新闻内容
+        if(request()->file('image')) {
+            //获取图片信息
+            $file = request()->file('image');
+            //如果有上传图片，则处理图片文件，否则$imgName置空写入数据库
+            $imgName = '';
+            if ($file) {
+                //将图片保存到/public/static/news_imgs 目录下
+                $info = $file->move(ROOT_PATH . 'public/static' . DS . 'news_imgs');
+                //获取图片的文件名
+                $imgName = $info->getSaveName();
+                $this->success('','',$imgName);
+            }
+        }
         //php后端验证
         if ($this->request->isPost()) {
             $validate = new Validate([
@@ -187,18 +206,8 @@ class NewsController extends AdminBaseController
             if (!$validate->check($data)) {
                 $this->error($validate->getError());
             }
-            //获取图片信息
-            $file = request()->file('image');
-            if($file) {
-                //将图片保存到/public/static/news_imgs 目录下
-                $info = $file->move(ROOT_PATH . 'public/static' . DS . 'news_imgs');
-                //获取图片的文件名
-                $imgName = $info->getSaveName();
-                $data['img'] = $imgName;
-            }
-            $id = $this->request->param('id');
             $data['update_time'] = time();
-            $update = $this->model->where('id',$id)->update($data);
+            $update = $this->model->where('id',$data['id'])->update($data);
 
             if ($update){
                 $this->success('新闻修改成功！',url('admin/NewsController/index'),'修改新闻:'.$data['title']);

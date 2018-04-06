@@ -18,7 +18,7 @@ class Index extends UserBaseController
     $newsList = $news->alias('n')->join([
         ['department d','d.id=n.dep_id'],
         ['news_type nt','nt.id=n.type_id'],
-    ])->field(['n.*','d.name dep','nt.name type'])->where('nt.delete_time',0)
+    ])->field(['n.*','d.name dep','nt.name type'])->where('n.delete_time',0)
         ->limit(7)->order('n.create_time desc')->select();
     //最新评论列表
     $comment = new Comment();

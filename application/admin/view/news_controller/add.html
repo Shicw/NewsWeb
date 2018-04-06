@@ -16,9 +16,9 @@
                     <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
                     <a href="{:url('admin/Index/index')}" target="_top">首页</a>
                     <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
-                    <a href="">门户管理</a>
-                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
                     <a href="{:url('admin/NewsController/index')}">新闻管理</a>
+                    <span><img src="__STATIC__/admin/images/icon3.png" alt=""/></span>
+                    <a href="{:url('admin/NewsController/add')}">发布新闻</a>
                 </div>
                 <!--当前位置-->
             </div>
@@ -30,12 +30,11 @@
                             <li class="now"><span><a href="{:url('admin/NewsController/add')}">添加新闻</a></span></li>
                         </ul>
                         <div class="tabCont" style="display:block;height: 650px;">
-                           <form action="{:url('admin/NewsController/addPost')}" enctype="multipart/form-data" method="post">
+                           <form action="{:url('admin/NewsController/addPost')}" enctype="multipart/form-data" method="post" id="form">
                                <div class="col-md-5">
-
                                    <div class="form-group">
-                                       <label for="input-type"><span class="form-required">*</span>类别</label>
-                                       <select name="type_id" id="input-type" class="form-control">
+                                       <label for="type_id"><span class="form-required">*</span>类别</label>
+                                       <select name="type_id" id="type_id" class="form-control">
                                            <option value="" hidden>请选择类别</option>
                                            {volist name="typeList" id="vo"}
                                            <option value="{$vo.id}">{$vo.name}</option>
@@ -43,8 +42,8 @@
                                        </select>
                                    </div>
                                    <div class="form-group">
-                                       <label for="input-department"><span class="form-required">*</span>部门</label>
-                                       <select name="dep_id" id="input-department" class="form-control">
+                                       <label for="dep_id"><span class="form-required">*</span>部门</label>
+                                       <select name="dep_id" id="dep_id" class="form-control">
                                            <option value="" hidden>请选择部门</option>
                                            {volist name="depList" id="vo"}
                                            <option value="{$vo.id}">{$vo.name}</option>
@@ -52,27 +51,101 @@
                                        </select>
                                    </div>
                                    <div class="form-group">
-                                       <label for="input-title"><span class="form-required">*</span>新闻标题</label>
-                                       <input type="text" id="input-title" name="title" class="form-control">
+                                       <label for="title"><span class="form-required">*</span>新闻标题</label>
+                                       <input type="text" id="title" name="title" class="form-control">
                                    </div>
                                    <div class="form-group">
-                                       <label for="input-content"><span class="form-required">*</span>新闻内容</label>
+                                       <label for="content"><span class="form-required">*</span>新闻内容</label>
                                        <!-- 加载UEditor编辑器的容器 -->
-                                       <script id="input-content" name="content" type="text/plain"></script>
+                                       <script id="content" name="content" type="text/plain"></script>
                                    </div>
                                </div>
                                <div class="col-md-7" style="margin-top: 60px">
                                    <div class="form-group">
-                                       <label for="input-img">&nbsp;添加图片</label>
-                                       <input type="file" id="input-img" name="image" accept="image/png, image/jpeg"/>
+                                       <label for="image">&nbsp;添加图片</label>
+                                       <input type="file" id="image" name="image" accept="image/png, image/jpeg"/>
                                        <div class="form-control" id="imgDiv"><img src="" id="img" hidden></div>
                                    </div>
                                    <div class="form-group">
-                                       <button type="submit" class="btn btn-primary">添加</button>
+                                       <a type="submit" class="btn btn-primary" onclick="add()">添加</a>
                                        <a class="btn btn-default" href="{:url('admin/NewsController/index')}">返回</a>
                                    </div>
                                </div>
                            </form>
+                            <script>
+                                function add() {
+                                    var load = layer.load(0, {shade: false});
+                                    var form = $("#form");
+                                    //获取表单数据
+                                    var formData = form.serializeArray();
+                                    for(var i=0;i<formData.length;i++){
+                                        var value = formData[i].value;
+                                        //若某个input未输入,则弹窗提示
+                                        if(value === ''){
+                                            //循环时,获取当前所对应的input标签的上一个同级标签的text值,即所对应的label的文本值
+                                            var msg = $("#"+formData[i].name).prev().text();
+                                            layer.msg('请输入'+msg,{time:2000});
+                                            return false;
+                                        }
+                                    }
+                                    var url = form.attr('action');
+                                    var type = form.attr('method');
+
+                                    //获取图片信息，若存在图片则先执行一次ajax发送图片，再ajax发送新闻内容
+                                    //若不存在图片，则直接执行ajax发送新闻内容
+                                    var file = $('#image')[0].files;
+                                    if(file.length>0) {
+                                        var image = new FormData();
+                                        image.append('image', file[0]);
+                                        $.ajax({
+                                            type: type,
+                                            url: url,
+                                            data: image,
+                                            dataType: "json",
+                                            processData: false,//用于对data参数进行序列化处理 这里必须false
+                                            contentType: false, //必须
+                                            success: function (result) {
+                                                var imgName = result.data;
+                                                formData.push({name:'imgName',value:imgName});
+                                                $.ajax({
+                                                    type:type,
+                                                    url:url,
+                                                    data:formData,
+                                                    dataType:"json",
+                                                    success:function (result) {
+                                                        //如果返回值中有url,则跳转到该url
+                                                        if(result.url !== ''){
+                                                            layer.close(load);
+                                                            layer.msg(result.msg,{time:1500});
+                                                            setTimeout(function () {
+                                                                window.location.href = result.url;
+                                                            },1600);
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }else{
+                                        formData.push({name:'imgName',value:''});
+                                        $.ajax({
+                                            type:type,
+                                            url:url,
+                                            data:formData,
+                                            dataType:"json",
+                                            success:function (result) {
+                                                //如果返回值中有url,则跳转到该url
+                                                if(result.url !== ''){
+                                                    layer.close(load);
+                                                    layer.msg(result.msg,{time:1500});
+                                                    setTimeout(function () {
+                                                        window.location.href = result.url;
+                                                    },1600);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -81,12 +154,9 @@
     </div>
 </div>
 <script>
-    $('#input-img').change(function () {
+    $('#image').change(function () {
         //获取当前上传图片
         var imgData = this.files[0];
-        //获取图片的大小
-        var imgSize = imgData.size;
-        //console.log(imgData);
         //新建一个文件读取对象
         var imgRead = new FileReader();
         //要读取的文件对象
@@ -107,7 +177,7 @@
 <script type="text/javascript" src="__STATIC__/admin/ueditor-php/ueditor.all.js"></script>
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
-    var ue = UE.getEditor('input-content',{
+    var ue = UE.getEditor('content',{
         initialFrameHeight:280,
         initialFrameWidth: null,
         autoHeightEnabled:false,

@@ -75,7 +75,7 @@ class PersonController extends UserBaseController
                 $find = $staff->where('id',$data['id'])->find();
                 session('user', $find);
 
-                $this->success('个人信息修改成功！',url('index/PersonController/index'),'个人信息修改');
+                $this->success('个人信息修改成功！','','个人信息修改');
             }else{
                 $this->error('没有新修改的信息！');
             }
