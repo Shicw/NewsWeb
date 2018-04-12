@@ -293,12 +293,14 @@ class StaffController extends AdminBaseController
             ['province_city pc3', 'pc3.id=s.district_id'],
         ])->field(['s.*','d.name dep','j.name job','pc1.name province', 'pc2.name city', 'pc3.name district'])
             ->where('s.id',$id)->find();
-        $sex = array("0"=>"未设置","1"=>"男","2"=>"女",);
-        $status = array("0"=>"禁用","1"=>"启用");
-        $data['sex'] = $sex[$data['sex']];
-        $data['status'] = $status[$data['status']];
-
         if($data){
+            $sex = array("0"=>"未设置","1"=>"男","2"=>"女",);
+            $status = array("0"=>"禁用","1"=>"启用");
+            $data['sex'] = $sex[$data['sex']];
+            $data['status'] = $status[$data['status']];
+            $data['birthday'] = date("Y-m-d",$data['birthday']);
+            $data['employ_date'] = date("Y-m-d",$data['employ_date']);
+
             $this->success('','',$data);
         }else{
             $this->error('未查到人员信息');

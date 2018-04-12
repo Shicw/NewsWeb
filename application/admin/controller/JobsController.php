@@ -85,6 +85,7 @@ class JobsController extends AdminBaseController
             if (!$validate->check($data)) {
                 $this->error($validate->getError());
             }
+
             $update = $this->model->insert($data);
             if ($update){
                 $this->success('添加成功！',url('admin/JobsController/index'),'添加岗位:'.$data['name']);

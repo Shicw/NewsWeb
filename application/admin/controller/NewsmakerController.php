@@ -121,7 +121,7 @@ class NewsmakerController extends AdminBaseController
     //接收ajax值，查询所选部门下的员工列表
     public function showStaff($did){
         $data = Db::name('staff')->field(['id','name'])
-            ->where(['delete_time'=>0,'dep_id'=>$did])->select();
+            ->where(['delete_time'=>0,'dep_id'=>$did,'type'=>['<>',2]])->select();
         $this->success('','',$data);
     }
 

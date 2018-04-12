@@ -247,7 +247,7 @@ class NewsController extends AdminBaseController
             "depCount" => $depCount
         ];
         if($typeCount && $depCount){
-            $this->success('图表信息查询成功','',$data);
+            $this->success('','',$data);
         }else{
             $this->error('图表信息查询失败！');
         }
