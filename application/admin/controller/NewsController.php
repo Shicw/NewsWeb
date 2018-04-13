@@ -45,6 +45,17 @@ class NewsController extends AdminBaseController
             $conditions['n.type_id'] = $type_id;
         }
         $typeList = Db::name('news_type')->where('delete_time',0)->select();
+        //日期筛选
+        $time_end = '';
+        $time_begin = '';
+        if (!empty($request['time_end'])) {
+            $time_end = $request['time_end'];
+            $conditions['n.create_time'] = ['<= time', $time_end];//time为时间比较条件，兼容时间戳和时间字符串
+        }
+        if (!empty($request['time_begin'])) {
+            $time_begin = $request['time_begin'];
+            $conditions['n.create_time'] = ['>= time', $time_begin];//time为时间比较条件，兼容时间戳和时间字符串
+        }
         //过滤被删除的记录
         $conditions['n.delete_time'] = 0;
         //判断当前登录的是发布者还是admin，发布者只能看到自己发布的新闻列表
@@ -60,7 +71,9 @@ class NewsController extends AdminBaseController
                 'query' => [
                     'keyword' => $keyword,
                     'dep_id' => $dep_id,
-                    'type_id' => $type_id
+                    'type_id' => $type_id,
+                    'time_begin' => $time_begin,
+                    'time_end' => $time_end,
                 ]
         ]);
         $page = $newsList->render();

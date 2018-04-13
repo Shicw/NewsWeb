@@ -7,7 +7,11 @@
     <div class="right_m">
         <div class="hy_list">
             <div class="box_t">
+                {eq name="userType" value="0"}
                 <span class="name">新闻管理</span>
+                {else/}
+                <span class="name">我的发布记录</span>
+                {/eq}
                 <!--当前位置-->
                 <div class="position">
                     <a><img src="__STATIC__/admin/images/icon5.png" alt=""/></a>
@@ -55,6 +59,9 @@
                                         <option value="{$vo.id}" {$selected}>{$vo.name}</option>
                                         {/volist}
                                     </select>
+                                    发布时间:
+                                    <input type="dateTime" class="form-control jeinput" id="jedate1" value="{:input('request.time_begin')}" style="width: 160px;" name="time_begin"  onfocus=this.blur() /> -
+                                    <input type="dateTime" class="form-control jeinput" id="jedate2" value="{:input('request.time_end')}" style="width: 160px;" name="time_end"  onfocus=this.blur() />
                                     <input type="submit" class="btn btn-primary" value="搜索"/>
                                     <a class="btn btn-danger" href="{:url('admin/NewsController/index')}">清空</a>
                                 </div>
@@ -108,6 +115,14 @@
         </div>
     </div>
 </div>
+<script>
+    $("#jedate1").jeDate({
+        format: "YYYY-MM-DD hh:mm:ss"
+    });
+    $("#jedate2").jeDate({
+        format: "YYYY-MM-DD hh:mm:ss"
+    });
+</script>
 <script src="__STATIC__/admin/js/dialog-layer.js"></script>
 </body>
 </html>

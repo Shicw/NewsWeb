@@ -151,10 +151,10 @@ class JobsController extends AdminBaseController
             if ($result){
                 $this->success('删除成功！',url('admin/JobsController/index'),'删除岗位:'.$find['name']);
             }else{
-                $this->error('删除失败！','','删除岗位:'.$find['name']);
+                $this->error('删除失败！');
             }
         }else{
-            $this->error('删除失败,该岗位不存在！','','删除岗位:'.$find['name']);
+            $this->error('删除失败,该岗位不存在！');
         }
     }
 }

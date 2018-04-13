@@ -57,6 +57,7 @@ class Index extends AdminBaseController
         $this->isLogin();
         return $this->fetch();
     }
+    //加载左侧导航菜单
     public function left(){
         $this->isLogin();
         //将type赋值给模板，判断是admin还是新闻发布者，显示不同的slidenav
@@ -64,11 +65,12 @@ class Index extends AdminBaseController
         $this->assign('staffType',$staffType);
         return $this->fetch();
     }
+    //加载仪表盘
     public function main(){
         $this->isLogin();
-
         return $this->fetch();
     }
+    //加载顶部栏
     public function top(){
         $this->isLogin();
         $admin = session('admin');

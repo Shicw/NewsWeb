@@ -134,10 +134,10 @@ class DepartmentController extends AdminBaseController
             if ($result){
                 $this->success('删除成功！',url('admin/DepartmentController/index'),'删除部门:'.$find['name']);
             }else{
-                $this->error('删除失败！','','删除部门:'.$find['name']);
+                $this->error('删除失败！');
             }
         }else{
-            $this->error('删除失败,该部门不存在！','','删除部门:'.$find['name']);
+            $this->error('删除失败,该部门不存在！');
         }
     }
     //设为主要部门
@@ -150,10 +150,10 @@ class DepartmentController extends AdminBaseController
             if ($result){
                 $this->success('设置成功！',url('admin/DepartmentController/index'),'设置主要部门:'.$find['name']);
             }else{
-                $this->error('设置失败！','','设置主要部门:'.$find['name']);
+                $this->error('设置失败！');
             }
         }else{
-            $this->error('设置失败,该部门不存在！','','设置主要部门:'.$find['name']);
+            $this->error('设置失败,该部门不存在！');
         }
     }
     //取消主要部门
@@ -166,10 +166,10 @@ class DepartmentController extends AdminBaseController
             if ($result){
                 $this->success('取消成功！',url('admin/DepartmentController/index'),'取消主要部门:'.$find['name']);
             }else{
-                $this->error('取消失败！','','取消主要部门:'.$find['name']);
+                $this->error('取消失败！');
             }
         }else{
-            $this->error('取消失败,该部门不存在！','','取消主要部门:'.$find['name']);
+            $this->error('取消失败,该部门不存在！');
         }
     }
 }

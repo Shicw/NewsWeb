@@ -147,7 +147,7 @@ class StaffController extends AdminBaseController
                 $this->error('添加失败！');
             }
         }else{
-            $this->error('请求错误','','添加人员');
+            $this->error('请求错误');
         }
 
     }
@@ -236,7 +236,7 @@ class StaffController extends AdminBaseController
             if ($result){
                 $this->success('禁用成功！',url('admin/StaffController/index'),'禁用用户:'.$name);
             }else{
-                $this->error('禁用失败！','','禁用用户:'.$name);
+                $this->error('禁用失败！');
             }
         }else{
             $this->error('禁用失败,该用户不存在！');
@@ -254,7 +254,7 @@ class StaffController extends AdminBaseController
             if ($result){
                 $this->success('启用成功！',url('admin/StaffController/index'),'启用用户:'.$name);
             }else{
-                $this->error('启用失败！','','启用用户:'.$name);
+                $this->error('启用失败！');
             }
         }else{
             $this->error('启用失败,该用户不存在！');
@@ -271,7 +271,7 @@ class StaffController extends AdminBaseController
             if ($result){
                 $this->success('删除成功！',url('admin/StaffController/index'),'删除用户:'.$name);
             }else{
-                $this->error('删除失败！','','删除用户:'.$name);
+                $this->error('删除失败！');
             }
         }else{
             $this->error('删除失败,该用户不存在！');

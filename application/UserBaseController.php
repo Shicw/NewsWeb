@@ -19,7 +19,7 @@ class UserBaseController extends Controller
     //重载父类Controller中的success和error方法，将当前操作的信息写进日志表
     public function success($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
     {
-        //检测到用户登录，或者充值密码时 执行日志记录
+        //检测到用户登录，或者重置密码时 执行日志记录
         if(session('user.id') || session('resetUserId')) {
             $logsData = [
                 'msg' => $msg,
@@ -31,19 +31,19 @@ class UserBaseController extends Controller
         }
         parent::success($msg, $url, $data, $wait, $header);
     }
-    //public function error($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
-    //{
-    //    if(session('user.id')) {
-    //        $logsData = [
-    //            'msg' => $msg,
-    //            'data' => $data,
-    //            'staff_id' => session('user.id'),
-    //            'create_time' => time()
-    //        ];
-    //        Db::name('logs')->insert($logsData);
-    //    }
-    //    parent::error($msg, $url, $data, $wait, $header);
-    //}
+    /*public function error($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
+    {
+        if(session('user.id')) {
+            $logsData = [
+                'msg' => $msg,
+                'data' => $data,
+                'staff_id' => session('user.id'),
+                'create_time' => time()
+            ];
+            Db::name('logs')->insert($logsData);
+        }
+        parent::error($msg, $url, $data, $wait, $header);
+    }*/
 
     //注销success方法
     public function successLoginout($msg = '', $url = null, $data = '', $wait = 1, array $header = [])

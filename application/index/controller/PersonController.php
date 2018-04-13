@@ -160,9 +160,7 @@ class PersonController extends UserBaseController
     public function collection(){
         //导航栏
         $nav = $this->navList();
-        //读取前台登录的用户信息
         $user = session('user');
-        //我的收藏列表
         $id = $user['id'];
         //查询收藏列表，关联news,type,department表
         $list = Db::name('collection c')->join([

@@ -64,10 +64,10 @@ class CommentController extends AdminBaseController
             if ($result){
                 $this->success('评论删除成功!',url('admin/CommentController/index'),'删除评论:'.$find['comment']);
             }else{
-                $this->error('评论删除失败!','','删除评论:'.$find['comment']);
+                $this->error('评论删除失败!');
             }
         }else{
-            $this->error('评论删除失败,记录不存在!','','删除评论:'.$find['comment']);
+            $this->error('评论删除失败,记录不存在!');
         }
     }
 }
