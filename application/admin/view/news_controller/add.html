@@ -74,7 +74,6 @@
                            </form>
                             <script>
                                 function add() {
-                                    var load = layer.load(0, {shade: false});
                                     var form = $("#form");
                                     //获取表单数据
                                     var formData = form.serializeArray();
@@ -88,6 +87,7 @@
                                             return false;
                                         }
                                     }
+                                    var load = layer.load(0, {shade: false});
                                     var url = form.attr('action');
                                     var type = form.attr('method');
 

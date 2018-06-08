@@ -123,15 +123,15 @@ class StaffController extends AdminBaseController
                 'name.max' => '姓名太长',
                 'sex.require' => '性别不能为空',
                 'dep_id.require' => '部门不能为空',
-                'province_id' => '省份不能为空',
-                'city_id' => '城市不能为空',
-                'district_id' => '区县不能为空',
-                'mobile' => '手机不能为空',
-                'email' => '邮箱不能为空',
-                'birthday' => '出生日期不能为空',
-                'employ_date' => '入职时间不能为空',
-                'username' => '用户名不能为空',
-                'password' => '密码不能为空'
+                'province_id.require' => '省份不能为空',
+                'city_id.require' => '城市不能为空',
+                'district_id.require' => '区县不能为空',
+                'mobile.require' => '手机不能为空',
+                'email.require' => '邮箱不能为空',
+                'birthday.require' => '出生日期不能为空',
+                'employ_date.require' => '入职时间不能为空',
+                'username.require' => '用户名不能为空',
+                'password.require' => '密码不能为空'
             ]);
             $data = $this->request->post();
             $data['birthday'] = strtotime($data['birthday']);
@@ -200,14 +200,14 @@ class StaffController extends AdminBaseController
                 'name.chs' => '姓名只能为汉字',
                 'sex.require' => '性别不能为空',
                 'dep_id.require' => '部门不能为空',
-                'job_id' => '岗位不能为空',
-                'province_id' => '省份不能为空',
-                'city_id' => '城市不能为空',
-                'district_id' => '区县不能为空',
-                'mobile' => '手机不能为空',
-                'email' => '邮箱不能为空',
-                'birthday' => '出生日期不能为空',
-                'employ_date' => '入职时间不能为空',
+                'job_id.require' => '岗位不能为空',
+                'province_id.require' => '省份不能为空',
+                'city_id.require' => '城市不能为空',
+                'district_id.require' => '区县不能为空',
+                'mobile.require' => '手机不能为空',
+                'email.require' => '邮箱不能为空',
+                'birthday.require' => '出生日期不能为空',
+                'employ_date.require' => '入职时间不能为空',
             ]);
             $data = $this->request->post();
             $data['birthday'] = strtotime($data['birthday']);
@@ -279,7 +279,7 @@ class StaffController extends AdminBaseController
     }
     //接收ajax传值，检查用户名是否重复
     public function checkUsername($username){
-        $find = $this->model->where('username',$username)->find();
+        $find = $this->model->where(['username'=>$username,'delete_time'=>0])->find();
         $code = $find ? 1 : 0;
         return json(["code" => $code]);
     }

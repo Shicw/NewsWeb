@@ -111,7 +111,7 @@ class NewsController extends AdminBaseController
             //如果有上传图片，则处理图片文件，否则$imgName置空写入数据库
             $imgName = '';
             if ($file) {
-                //将图片保存到/public/static/news_imgs 目录下
+                //将图片保存到/pu`blic/static/news_imgs 目录下
                 $info = $file->move(ROOT_PATH . 'public/static' . DS . 'news_imgs');
                 //获取图片的文件名
                 $imgName = $info->getSaveName();
